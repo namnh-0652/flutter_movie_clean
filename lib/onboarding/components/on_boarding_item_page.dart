@@ -85,7 +85,7 @@ class OnBoardingItemPage extends StatelessWidget {
                   );
                 },
                 child: Text(
-                  LocaleKeys.continue_on_boarding.tr(),
+                  LocaleKeys.continueOnBoarding.tr(),
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),

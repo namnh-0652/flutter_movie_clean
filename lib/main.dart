@@ -1,10 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_clean/onboarding/on_boarding_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_movie_clean/bloc_observer.dart';
 import 'package:flutter_movie_clean/theme/app_theme.dart';
+
+import 'router/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = const AppBlocObserver();
+
   await EasyLocalization.ensureInitialized();
   const supportedLocales = [Locale('en'), Locale('vi')];
   runApp(
@@ -24,13 +29,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final darkTheme = AppTheme.dark();
-    return MaterialApp(
+    return MaterialApp.router(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
-      home: const OnBoardingScreen(),
+      routerConfig: router,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../generated/assets.gen.dart';
@@ -94,7 +95,9 @@ class OnBoardingEndPage extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.zero),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  context.go(context.namedLocation('home'));
+                },
                 child: Text(
                   LocaleKeys.login.tr(),
                   style: Theme.of(context).textTheme.titleMedium,

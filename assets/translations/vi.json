@@ -1,10 +1,19 @@
 {
-  "continue_on_boarding": "Tiếp tục",
+  "continueOnBoarding": "Tiếp tục",
   "login": "Đăng nhập",
   "signup": "Đăng ký",
-  "on_boarding_page_1_title": "Tất cả \n phim MARVEL & Series \n tại một nơi",
-  "on_boarding_page_2_title": "Xem trực tuyến \n hoặc \n tải xuống ngoại tuyến",
-  "on_boarding_page_3_title": "Tạo hồ sơ cho \n các thành viên khác nhau & \n nhận đề xuất \n được cá nhân hóa",
-  "on_boarding_page_4_title": "Các gói theo nhu cầu của bạn \n với mức giá phải chăng",
-  "on_boarding_page_5_title": "Bắt đầu thôi !!!"
+  "onBoardingPageFirstTitle": "Tất cả \n phim MARVEL & Series \n tại một nơi",
+  "onBoardingPageSecondTitle": "Xem trực tuyến \n hoặc \n tải xuống ngoại tuyến",
+  "onBoardingPageThirdTitle": "Tạo hồ sơ cho \n các thành viên khác nhau & \n nhận đề xuất \n được cá nhân hóa",
+  "onBoardingPageFourthTitle": "Các gói theo nhu cầu của bạn \n với mức giá phải chăng",
+  "onBoardingPageFifthTitle": "Bắt đầu thôi !!!",
+  "home": "Trang chủ",
+  "categories": "Thể loại",
+  "downloads": "Tải xuống",
+  "more": "Thêm",
+  "latestMovies": "Những Bộ Phim Gần Đây",
+  "latestSeries": "Sê-ri Mới Nhất",
+  "trendingToday": "Xu Hướng Hôm Nay",
+  "oldMovies": "Những Bộ Phim Cũ",
+  "oldSeries": "Sê-ri Cũ"
 }

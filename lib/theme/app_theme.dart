@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static TextTheme lightTextTheme = const TextTheme(
     titleLarge: TextStyle(
-      fontSize: 22.0,
+      fontSize: 24.0,
       fontWeight: FontWeight.w600,
       color: Colors.black,
     ),
@@ -21,7 +21,7 @@ class AppTheme {
 
   static TextTheme dartTextTheme = const TextTheme(
     titleLarge: TextStyle(
-      fontSize: 22.0,
+      fontSize: 24.0,
       fontWeight: FontWeight.w600,
       color: Colors.white,
     ),

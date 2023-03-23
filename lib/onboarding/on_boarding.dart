@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_movie_clean/generated/assets.gen.dart';
 import 'package:flutter_movie_clean/generated/locale_keys.g.dart';
 
-import 'component/on_boarding_end_page.dart';
-import 'component/on_boarding_item_page.dart';
+import 'components/on_boarding_end_page.dart';
+import 'components/on_boarding_item_page.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -17,20 +17,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _controller = PageController();
   bool _isEndPage = false;
   final List<String> _titles = [
-    LocaleKeys.on_boarding_page_1_title.tr(),
-    LocaleKeys.on_boarding_page_2_title.tr(),
-    LocaleKeys.on_boarding_page_3_title.tr(),
-    LocaleKeys.on_boarding_page_4_title.tr(),
-    LocaleKeys.on_boarding_page_5_title.tr(),
+    LocaleKeys.onBoardingPageFirstTitle.tr(),
+    LocaleKeys.onBoardingPageSecondTitle.tr(),
+    LocaleKeys.onBoardingPageThirdTitle.tr(),
+    LocaleKeys.onBoardingPageFourthTitle.tr(),
+    LocaleKeys.onBoardingPageFifthTitle.tr(),
   ];
   String _title = '';
   final List<String> _posterPaths = [
-    Assets.images.poster1.path,
-    Assets.images.poster2.path,
-    Assets.images.poster3.path,
-    Assets.images.poster4.path,
-    Assets.images.poster5.path,
-    Assets.images.poster6.path,
+    Assets.images.onboardings.poster1.path,
+    Assets.images.onboardings.poster2.path,
+    Assets.images.onboardings.poster3.path,
+    Assets.images.onboardings.poster4.path,
+    Assets.images.onboardings.poster5.path,
+    Assets.images.onboardings.poster6.path,
   ];
 
   final Gradient _maskingGradient = const LinearGradient(
