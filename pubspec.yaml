@@ -77,6 +77,10 @@ flutter:
     - assets/images/movies/
     - assets/images/series/
     - assets/images/trendings/
+    - assets/images/moviedetails/
+    - assets/images/trailers/
+    - assets/images/casts/
+    - assets/images/mores/
     - assets/translations/
 
   # The following line ensures that the Material Icons font is

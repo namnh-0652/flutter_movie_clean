@@ -15,5 +15,8 @@
   "latestSeries": "Latest Series",
   "trendingToday": "Trending Today",
   "oldMovies": "Old Movies",
-  "oldSeries": "Old Series"
+  "oldSeries": "Old Series",
+  "addToWatchList": "+ add To WatchList",
+  "trailer": "Trailer",
+  "cast": "Cast"
 }

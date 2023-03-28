@@ -9,14 +9,16 @@ class AppTheme {
     ),
     titleMedium: TextStyle(
       fontSize: 20.0,
-      fontWeight: FontWeight.w500,
-      color: Colors.black,
-    ),
-    titleSmall: TextStyle(
-      fontSize: 12.0,
       fontWeight: FontWeight.w600,
       color: Colors.black,
     ),
+    titleSmall: TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      color: Colors.black,
+    ),
+
+
   );
 
   static TextTheme dartTextTheme = const TextTheme(
@@ -27,12 +29,12 @@ class AppTheme {
     ),
     titleMedium: TextStyle(
       fontSize: 20.0,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: Colors.white,
     ),
     titleSmall: TextStyle(
-      fontSize: 12.0,
-      fontWeight: FontWeight.w600,
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
       color: Colors.white,
     ),
   );
