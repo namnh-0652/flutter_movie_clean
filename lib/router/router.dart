@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_clean/moviedetails/components/youtube_player_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../exports/screens.dart';
-import '../home/home.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -35,11 +35,20 @@ final GoRouter router = GoRouter(
             },
             routes: <RouteBase>[
               GoRoute(
-                name: 'movie_details',
-                path: 'movie_details',
-                parentNavigatorKey: _rootNavigatorKey,
-                builder: (BuildContext context, GoRouterState state) => const MovieDetailsScreen(),
-              ),
+                  name: 'movie_details',
+                  path: 'movie_details',
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      const MovieDetailsScreen(),
+                  routes: <RouteBase>[
+                    GoRoute(
+                      name: 'youtube_player',
+                      path: 'youtube_player/:id',
+                      parentNavigatorKey: _rootNavigatorKey,
+                      builder: (BuildContext context, GoRouterState state) =>
+                          YoutubePlayerView(trailerId: state.params['id']!),
+                    ),
+                  ]),
             ]),
         GoRoute(
             name: 'categories',

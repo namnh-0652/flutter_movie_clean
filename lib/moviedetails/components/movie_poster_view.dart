@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_movie_clean/moviedetails/cubit/movie_details_cubit.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../generated/assets.gen.dart';
 
@@ -59,7 +60,12 @@ class MoviePosterView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 12.0),
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  context.goNamed(
+                    'youtube_player',
+                    params: <String, String>{'id': movieDetails.trailer},
+                  );
+                },
                 child: Image.asset(
                   Assets.images.icons.icPlay.path,
                   fit: BoxFit.cover,
@@ -68,7 +74,7 @@ class MoviePosterView extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

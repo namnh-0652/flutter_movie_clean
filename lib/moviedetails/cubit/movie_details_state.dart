@@ -11,7 +11,7 @@ class MovieDetailsState {
     1,
     'Ant-Man and The Wasp Quantumania',
     'Super Hero partners Scott Lang and Hope Van Dyne return to continue their adventures as Ant-Man and The Wasp. Together, with Hope’s parents Hank Pym and Janet Van Dyne, the family finds themselves exploring the Quantum Realm, interacting with strange new creatures, and embarking on an adventure that will push them beyond the limits of what they thought was possible.',
-    Assets.images.moviedetails.details2.path,
+    'iLnmTe5Q2Qw',
     [
       Cast(1, 'Paul Bettany', 'vision', Assets.images.casts.casts1.path),
       Cast(2, 'Elizabeth Olsen', 'Wanda Maximoff', Assets.images.casts.casts2.path),

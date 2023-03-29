@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_movie_clean/generated/assets.gen.dart';
 import 'package:flutter_movie_clean/moviedetails/cubit/movie_details_cubit.dart';
+import 'package:go_router/go_router.dart';
 
 class TrailerTab extends StatelessWidget {
   const TrailerTab({Key? key}) : super(key: key);
@@ -21,11 +22,16 @@ class TrailerTab extends StatelessWidget {
           ),
         ),
         Center(
-            child: Image.asset(
-          Assets.images.icons.icPlay.path,
-          width: 80.0,
-          height: 80.0,
-          fit: BoxFit.cover,
+            child: InkWell(
+          onTap: () {
+            context.goNamed('youtube_player', params: <String, String>{'id': movieDetails.trailer});
+          },
+          child: Image.asset(
+            Assets.images.icons.icPlay.path,
+            width: 80.0,
+            height: 80.0,
+            fit: BoxFit.cover,
+          ),
         ))
       ],
     );
