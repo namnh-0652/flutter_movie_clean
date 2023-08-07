@@ -1,4 +1,4 @@
-package com.example.flutter_movie_clean
+package com.flutter.marvel
 
 import io.flutter.embedding.android.FlutterActivity
 
