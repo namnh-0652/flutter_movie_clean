@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_movie_clean">
+    package="com.flutter.marvel">
    <application
         android:label="${applicationName}"
         android:icon="@mipmap/ic_launcher">
