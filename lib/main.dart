@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_movie_clean/configs/env_configs.dart';
+import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
+
+import 'gen/assets.gen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +29,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -30,6 +43,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -56,8 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("Build: ${EnvConfigs.currentEnvironment}"),
-            const Text(
-              'You have pushed the button this many times:',
+            Text(
+              context.l10n.youClickButtonManyTimes,
+              style: const TextStyle(color: AppColors.black),
             ),
             Text(
               '$_counter',
@@ -68,9 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), //
+        tooltip: context.l10n.increment,
+        child: Assets.images.icPlus.svg(width: 32, height: 32),
+      ),
     );
   }
 }
