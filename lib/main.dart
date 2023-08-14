@@ -5,8 +5,7 @@ import 'package:flutter_movie_clean/configs/env_configs.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'gen/assets.gen.dart';
+import 'package:flutter_movie_clean/route/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +21,6 @@ Future<void> loadEnvConfigs() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -30,8 +28,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return MaterialApp(
-            title: 'Flutter Demo',
+          return MaterialApp.router(
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
@@ -42,57 +39,8 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
             ],
-            home: const MyHomePage(title: 'Flutter Demo Home Page'),
+            routerConfig: appRouter,
           );
         });
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Build: ${EnvConfigs.currentEnvironment}"),
-            Text(
-              context.l10n.youClickButtonManyTimes,
-              style: const TextStyle(color: AppColors.black),
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: context.l10n.increment,
-        child: Assets.images.icPlus.svg(width: 32, height: 32),
-      ),
-    );
   }
 }

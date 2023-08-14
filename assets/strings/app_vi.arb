@@ -1,4 +1,6 @@
 {
-  "increment" : "Đăng nhập",
-  "youClickButtonManyTimes": "Bạn đã nhấn nút này nhiều lần:"
+  "home": "Home",
+  "categories": "Thể loại",
+  "favorites": "Yêu thích",
+  "more": "Thêm"
 }
