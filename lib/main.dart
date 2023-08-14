@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_movie_clean/configs/env_configs.dart';
-import 'package:flutter_movie_clean/gen/colors.gen.dart';
-import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
-
-import 'gen/assets.gen.dart';
+import 'package:flutter_movie_clean/route/app_router.dart';
+import 'package:flutter_movie_clean/route/app_shell_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +22,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -36,56 +33,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Build: ${EnvConfigs.currentEnvironment}"),
-            Text(
-              context.l10n.youClickButtonManyTimes,
-              style: const TextStyle(color: AppColors.black),
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: context.l10n.increment,
-        child: Assets.images.icPlus.svg(width: 32, height: 32),
-      ),
+      routerConfig: appRouterWithShellRoute,
     );
   }
 }
