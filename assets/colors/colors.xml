@@ -3,4 +3,5 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="crimson_approx">#ED1B24</color>
+    <color name="crimson">#ED1B24</color>
 </resources>

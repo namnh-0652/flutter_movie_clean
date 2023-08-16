@@ -1,4 +1,6 @@
 {
-  "increment" : "Increment",
-  "youClickButtonManyTimes": "You have pushed the button this many times:"
+  "home": "Home",
+  "categories": "Categories",
+  "favorites": "Favorites",
+  "more": "More"
 }
