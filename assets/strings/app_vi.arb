@@ -2,5 +2,15 @@
   "home": "Home",
   "categories": "Thể loại",
   "favorites": "Yêu thích",
-  "more": "Thêm"
+  "more": "Thêm",
+  "increment": "Đăng nhập",
+  "youClickButtonManyTimes": "Bạn đã nhấn nút này nhiều lần:",
+  "welcomeDescription1": "Tất cả các bộ phim & sê-ri MARVEL\nyêu thích của bạn ở một nơi",
+  "welcomeDescription2": "Xem trực tuyến\nhoặc\nTải xuống ngoại tuyến",
+  "welcomeDescription3": "Tạo hồ sơ cho các thành viên khác nhau\n&\nnhận các đề xuất được cá nhân hóa",
+  "welcomeDescription4": "Kế hoạch theo nhu cầu của bạn\nvới giá cả phải chăng",
+  "welcomeDescription5": "Bắt đầu nào !!!",
+  "continueStr": "Tiếp tục",
+  "signup": "Đăng ký",
+  "login": "Đăng nhập"
 }
