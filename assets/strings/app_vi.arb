@@ -2,5 +2,8 @@
   "home": "Home",
   "categories": "Thể loại",
   "favorites": "Yêu thích",
-  "more": "Thêm"
+  "more": "Thêm",
+  "latestMovies": "Phim mới nhất",
+  "latestSeries": "Series mới nhất",
+  "trendingToday": "Thịnh hành hôm nay"
 }

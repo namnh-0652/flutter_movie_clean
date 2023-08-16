@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
@@ -47,40 +49,45 @@ class _MainPageState extends State<MainPage> {
           children: _pages,
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.black,
-        elevation: 0,
-        currentIndex: _selectedTab,
-        onTap: (index) => _changeTab(index),
-        selectedItemColor: AppColors.crimsonApprox,
-        unselectedItemColor: AppColors.white,
-        unselectedLabelStyle: TextStyle(
-          fontSize: 10.sp,
-          fontWeight: FontWeight.w600,
+      bottomNavigationBar: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: AppColors.black.withOpacity(0.7),
+            elevation: 0,
+            currentIndex: _selectedTab,
+            onTap: (index) => _changeTab(index),
+            selectedItemColor: AppColors.crimsonApprox,
+            unselectedItemColor: AppColors.white,
+            unselectedLabelStyle: TextStyle(
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w600,
+            ),
+            selectedLabelStyle: TextStyle(
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w600,
+            ),
+            items: [
+              _buildBottomNavigationItem(
+                icon: Assets.images.icHome,
+                label: context.l10n.home,
+              ),
+              _buildBottomNavigationItem(
+                icon: Assets.images.icCategory,
+                label: context.l10n.categories,
+              ),
+              _buildBottomNavigationItem(
+                icon: Assets.images.icFavorite,
+                label: context.l10n.favorites,
+              ),
+              _buildBottomNavigationItem(
+                icon: Assets.images.icMore,
+                label: context.l10n.more,
+              ),
+            ],
+          ),
         ),
-        selectedLabelStyle: TextStyle(
-          fontSize: 10.sp,
-          fontWeight: FontWeight.w600,
-        ),
-        items: [
-          _buildBottomNavigationItem(
-            icon: Assets.images.icHome,
-            label: context.l10n.home,
-          ),
-          _buildBottomNavigationItem(
-            icon: Assets.images.icCategory,
-            label: context.l10n.categories,
-          ),
-          _buildBottomNavigationItem(
-            icon: Assets.images.icFavorite,
-            label: context.l10n.favorites,
-          ),
-          _buildBottomNavigationItem(
-            icon: Assets.images.icMore,
-            label: context.l10n.more,
-          ),
-        ],
       ),
     );
   }

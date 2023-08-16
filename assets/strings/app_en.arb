@@ -2,5 +2,8 @@
   "home": "Home",
   "categories": "Categories",
   "favorites": "Favorites",
-  "more": "More"
+  "more": "More",
+  "latestMovies": "Latest Movies",
+  "latestSeries": "Latest Series",
+  "trendingToday": "Trending Today"
 }
