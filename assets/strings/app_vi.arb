@@ -12,5 +12,8 @@
   "welcomeDescription5": "Bắt đầu nào !!!",
   "continueStr": "Tiếp tục",
   "signup": "Đăng ký",
-  "login": "Đăng nhập"
+  "login": "Đăng nhập",
+  "latestMovies": "Phim mới nhất",
+  "latestSeries": "Series mới nhất",
+  "trendingToday": "Thịnh hành hôm nay"
 }
