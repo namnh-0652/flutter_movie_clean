@@ -15,5 +15,22 @@
   "login": "Đăng nhập",
   "latestMovies": "Phim mới nhất",
   "latestSeries": "Series mới nhất",
-  "trendingToday": "Thịnh hành hôm nay"
+  "trendingToday": "Thịnh hành hôm nay",
+  "signup": "Đăng ký",
+  "login": "Đăng nhập",
+  "emailHint": "Nhập email",
+  "password": "Nhập password",
+  "show": "hiện",
+  "hide": "ẩn",
+  "forgotPassword": "Quên mật khẩu?",
+  "or": "hoặc",
+  "continueWith": "Tiếp tục với",
+  "facebook": "Facebook",
+  "google": "Google",
+  "haveAccount": "Đã có tài khoản?",
+  "noAccount": "Chưa có tài khoản?",
+  "emptyEmail": "Vui lòng nhập email",
+  "wrongEmail": "Email chưa đúng",
+  "emptyPassword": "Vui lòng nhập mật khẩu",
+  "wrongPassword": "Mật khẩu chưa đủ mạnh"
 }

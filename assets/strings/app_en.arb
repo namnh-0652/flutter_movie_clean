@@ -13,5 +13,22 @@
   "login": "Login",
   "latestMovies": "Latest Movies",
   "latestSeries": "Latest Series",
-  "trendingToday": "Trending Today"
+  "trendingToday": "Trending Today",
+  "signup": "Signup",
+  "login": "Login",
+  "emailHint": "Enter your Email ID",
+  "password": "Password",
+  "show": "show",
+  "hide": "hide",
+  "forgotPassword": "Forgot password?",
+  "or": "or",
+  "continueWith": "Continue With",
+  "facebook": "Facebook",
+  "google": "Google",
+  "haveAccount": "Already have an account?",
+  "noAccount": "Don't have an account?",
+  "emptyEmail": "Please enter correct email format",
+  "wrongEmail": "Incorrect email format",
+  "emptyPassword": "Please enter your password",
+  "wrongPassword": "Password is not strong enough"
 }
