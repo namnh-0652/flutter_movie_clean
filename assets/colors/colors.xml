@@ -3,5 +3,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="crimson_approx">#ED1B24</color>
-    <color name="crimson">#ED1B24</color>
+    <color name="black50">#80000000</color>
+    <color name="white50">#80FFFFFF</color>
+    <color name="white70">#B2FFFFFF</color>
 </resources>

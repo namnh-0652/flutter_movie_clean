@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_movie_clean/configs/env_configs.dart';
-import 'package:flutter_movie_clean/gen/colors.gen.dart';
-import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_movie_clean/route/app_router.dart';
 

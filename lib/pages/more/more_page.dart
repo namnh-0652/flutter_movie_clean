@@ -9,7 +9,6 @@ class MorePage extends StatefulWidget {
 
 class _MorePageState extends State<MorePage>
     with AutomaticKeepAliveClientMixin {
-
   // TODO Update UI later
   @override
   Widget build(BuildContext context) {

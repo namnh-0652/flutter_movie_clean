@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PrimaryButton extends StatelessWidget {
+final class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     this.width,
     this.height,

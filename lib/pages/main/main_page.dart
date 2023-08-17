@@ -53,7 +53,7 @@ class _MainPageState extends State<MainPage> {
         elevation: 0,
         currentIndex: _selectedTab,
         onTap: (index) => _changeTab(index),
-        selectedItemColor: AppColors.crimson,
+        selectedItemColor: AppColors.crimsonApprox,
         unselectedItemColor: AppColors.white,
         unselectedLabelStyle: TextStyle(
           fontSize: 10.sp,
@@ -95,7 +95,7 @@ class _MainPageState extends State<MainPage> {
         width: 24.w,
         height: 24.h,
         colorFilter: const ColorFilter.mode(
-          AppColors.crimson,
+          AppColors.crimsonApprox,
           BlendMode.srcIn,
         ),
       ),
