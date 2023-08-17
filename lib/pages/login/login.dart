@@ -4,7 +4,7 @@ import 'package:flutter_movie_clean/components/primary_textfield.dart';
 import 'package:flutter_movie_clean/components/secondary_button.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
-import 'package:flutter_movie_clean/pages/main/main_page.dart';
+import 'package:flutter_movie_clean/pages/proflile/create_avatar/account_create_avatar_page.dart';
 import 'package:flutter_movie_clean/pages/signup/signup.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_movie_clean/shared/utils/validate_helper.dart';
@@ -134,8 +134,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () => {
           if (_formKey.currentState!.validate())
             {
-              // TODO: call login here
-              context.go(MainPage.routeLocation,
+              context.go(AccountCreateAvatarPage.routeLocation,
                   extra: {"user": _emailTextController.text})
             }
         },
