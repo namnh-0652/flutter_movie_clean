@@ -5,5 +5,5 @@ final class EnvConfigs {
     return dotenv.load(fileName: "assets/env/.env.$environment");
   }
 
-  static final  String currentEnvironment = dotenv.get("ENVIRONMENT");
+  static final String currentEnvironment = dotenv.get("ENVIRONMENT");
 }

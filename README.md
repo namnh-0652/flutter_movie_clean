@@ -2,7 +2,16 @@
 
 A sample Flutter application follow clean architecture
 
-## Build & Run app
+## Getting Started
+
+### Generate resources
+
+Run the commands below:
+
+- Generate images, colors: `dart run build_runner build --delete-conflicting-outputs`
+- Generate strings: `flutter pub get`
+
+### Build & Run app
 
 - In `Xcode` or `Visual Studio Code`, just select flavor and run.
 - In `Android Studio`:
@@ -15,11 +24,11 @@ A sample Flutter application follow clean architecture
 
   - Select and Run your flavor.
 
-## Generate resources
+## Collaborating
 
-Run the commands below:
-- Generate images, colors: `dart run build_runner build --delete-conflicting-outputs`
-- Generate strings: `flutter pub get`
+- Run `prepare.sh`
+- Add code
+- Commit and create PR
 
 ## Credit
 

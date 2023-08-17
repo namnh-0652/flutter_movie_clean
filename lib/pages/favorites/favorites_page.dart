@@ -9,7 +9,6 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage>
     with AutomaticKeepAliveClientMixin {
-
   // TODO Update UI later
   @override
   Widget build(BuildContext context) {
