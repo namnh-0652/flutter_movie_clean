@@ -4,6 +4,7 @@ import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage>
               alignment: Alignment.center,
               children: [
                 Align(
-                  alignment: Alignment.center,
+                  alignment: Alignment.topLeft,
                   child: Assets.images.icMarvelRed.svg(),
                 ),
                 Align(

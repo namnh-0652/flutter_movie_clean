@@ -12,6 +12,9 @@ dependencies:
     sdk: flutter
   domain:
     path: ../domain
+  flutter_hooks: ^0.18.0
+  hooks_riverpod: ^2.3.8
+  dio: ^5.3.2
 
 dev_dependencies:
   flutter_test:
