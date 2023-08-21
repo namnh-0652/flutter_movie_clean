@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_clean/pages/home/components/carousel_page_view.dart';
+import 'package:flutter_movie_clean/components/avatar_frame.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/pages/home/components/carousel_page_view.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,6 +19,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return Material(
@@ -26,56 +30,13 @@ class _HomePageState extends State<HomePage>
         color: AppColors.black,
         child: ListView(
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Assets.images.icMarvelRed.svg(),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: _buildAvatarFrame(),
-                ),
-              ],
-            ),
+            _buildTopPage(),
             _buildHeadingTitle(context.l10n.latestMovies),
-            CarouselPageView.builder(
-              height: 204.h,
-              itemCount: _posters.length,
-              itemBuilder: (context, index) {
-                return Image.network(_posters[index], fit: BoxFit.cover);
-              },
-            ),
+            _buildLatestMovies(),
             _buildHeadingTitle(context.l10n.latestSeries),
-            CarouselPageView.builder(
-              height: 204.h,
-              itemCount: _posters.length,
-              itemBuilder: (context, index) {
-                return Image.network(_posters[index], fit: BoxFit.cover);
-              },
-            ),
+            _buildLatestSeries(),
             _buildHeadingTitle(context.l10n.trendingToday),
-            SizedBox(
-              height: 150.h,
-              child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                clipBehavior: Clip.none,
-                scrollDirection: Axis.horizontal,
-                itemCount: _posters.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(width: 12.w);
-                },
-                itemBuilder: (context, index) {
-                  return Image.network(
-                    _posters[index],
-                    width: 100.w,
-                    height: 150.h,
-                    fit: BoxFit.cover,
-                  );
-                },
-              ),
-            ),
+            _buildTrendingMovies(),
           ],
         ),
       ),
@@ -83,21 +44,30 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildAvatarFrame() {
-    return Padding(
+    return AvatarFrame(
+      width: 70.h,
+      height: 70.h,
       padding: EdgeInsets.only(right: 16.w),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Assets.images.avatarFrame.svg(
-            width: 70.w,
-            height: 70.h,
-          ),
-          Assets.images.spidermanPlaceholder.image(
-            width: 54.w,
-            height: 54.h,
-          ),
-        ],
+      image: Assets.images.spidermanPlaceholder.image(
+        width: 54.w,
+        height: 54.h,
       ),
+    );
+  }
+
+  Widget _buildTopPage() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Assets.images.icMarvelRed.svg(),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: _buildAvatarFrame(),
+        ),
+      ],
     );
   }
 
@@ -115,8 +85,48 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  Widget _buildLatestMovies() {
+    return CarouselPageView.builder(
+      height: 204.h,
+      itemCount: _posters.length,
+      itemBuilder: (context, index) {
+        return Image.network(_posters[index], fit: BoxFit.cover);
+      },
+    );
+  }
+
+  _buildLatestSeries() {
+    return CarouselPageView.builder(
+      height: 204.h,
+      itemCount: _posters.length,
+      itemBuilder: (context, index) {
+        return Image.network(_posters[index], fit: BoxFit.cover);
+      },
+    );
+  }
+
+  Widget _buildTrendingMovies() {
+    return SizedBox(
+      height: 150.h,
+      child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        clipBehavior: Clip.none,
+        scrollDirection: Axis.horizontal,
+        itemCount: _posters.length,
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(width: 12.w);
+        },
+        itemBuilder: (context, index) {
+          return Image.network(
+            _posters[index],
+            width: 100.w,
+            height: 150.h,
+            fit: BoxFit.cover,
+          );
+        },
+      ),
+    );
+  }
 }
 
 // TODO Fake data. Remove later
