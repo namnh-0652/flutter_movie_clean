@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage>
     super.build(context);
     return Material(
       child: Container(
-        padding: EdgeInsets.only(top: 28.h, bottom: 16.h),
         color: AppColors.black,
         child: ListView(
           children: [

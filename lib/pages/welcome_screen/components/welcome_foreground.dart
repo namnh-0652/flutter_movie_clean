@@ -3,26 +3,29 @@ import 'package:flutter_movie_clean/components/primary_button.dart';
 import 'package:flutter_movie_clean/components/secondary_button.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/pages/login/login.dart';
+import 'package:flutter_movie_clean/pages/signup/signup.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WelcomeForeground extends StatelessWidget {
   const WelcomeForeground({
     this.isLastItem = false,
-    this.btnContinueClicked,
     this.description = "",
     this.pageCount = 0,
-    this.pageController,
+    required this.pageController,
     super.key,
   });
 
   final bool isLastItem;
   final String description;
-  final Function()? btnContinueClicked;
   final int pageCount;
-  final PageController? pageController;
+  final PageController pageController;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,34 +38,30 @@ class WelcomeForeground extends StatelessWidget {
             child: IgnorePointer(
               child: Container(
                 padding: const EdgeInsets.fromLTRB(7.74, 12.09, 6.22, 10.81),
-                color: AppColors.crimsonApprox,
                 width: 188.23.w,
-                child: Assets.images.icLogo.svg(fit: BoxFit.contain),
+                child: SvgPicture.asset(Assets.images.icLogo.path,
+                    fit: BoxFit.contain),
               ),
             ),
           ),
         ),
-        const SizedBox(
-          height: 68,
-        ),
+        SizedBox(height: 52.h),
         Flexible(
           flex: 1,
           child: IgnorePointer(
             child: SmoothPageIndicator(
-              controller: pageController ?? PageController(),
+              controller: pageController,
               count: pageCount,
-              effect: WormEffect(
+              effect: SwapEffect(
                 dotHeight: 10.w,
                 dotWidth: 10.w,
+                dotColor: AppColors.white,
                 activeDotColor: AppColors.crimsonApprox,
-                type: WormType.underground,
               ),
             ),
           ),
         ),
-        const SizedBox(
-          height: 52,
-        ),
+        SizedBox(height: 52.h),
         Flexible(
           flex: 5,
           child: isLastItem
@@ -74,19 +73,18 @@ class WelcomeForeground extends StatelessWidget {
                       child: PrimaryButton(
                           title: context.l10n.signup,
                           onPressed: () {
-                            //TODO GO TO SIGNUP
+                            context.go(SignupPage.routeLocation);
                           }),
                     ),
-                    SizedBox(
-                      height: 32.h,
-                    ),
+                    SizedBox(height: 32.h),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 30.w),
                       child: SecondaryButton(
-                          title: context.l10n.login,
-                          onPressed: () {
-                            //TODO GO TO LOGIN
-                          }),
+                        title: context.l10n.login,
+                        onPressed: () {
+                          context.go(LoginPage.routeLocation);
+                        },
+                      ),
                     )
                   ],
                 )
@@ -109,11 +107,15 @@ class WelcomeForeground extends StatelessWidget {
                             left: 30.w, right: 30.w, bottom: 40.h),
                         alignment: Alignment.bottomCenter,
                         child: PrimaryButton(
-                          width: 1.sw,
-                          height: 50.h,
-                          title: context.l10n.continueStr,
-                          onPressed: btnContinueClicked,
-                        ),
+                            width: 1.sw,
+                            height: 50.h,
+                            title: context.l10n.continueStr,
+                            onPressed: () {
+                              pageController.nextPage(
+                                duration: const Duration(milliseconds: 200),
+                                curve: Curves.linear,
+                              );
+                            }),
                       ),
                     ),
                   ],

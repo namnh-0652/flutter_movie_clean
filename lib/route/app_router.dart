@@ -10,6 +10,21 @@ final appRouter = GoRouter(
   initialLocation: WelcomeScreen.routeLocation,
   routes: [
     GoRoute(
+      path: WelcomeScreen.routeLocation,
+      name: WelcomeScreen.routeName,
+      builder: (context, state) => const WelcomeScreen(),
+    ),
+    GoRoute(
+      path: LoginPage.routeLocation,
+      name: LoginPage.routeName,
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: SignupPage.routeLocation,
+      name: SignupPage.routeName,
+      builder: (context, state) => const SignupPage(),
+    ),
+    GoRoute(
       path: MainPage.routeLocation,
       name: MainPage.routeName,
       redirect: (context, state) {
@@ -32,20 +47,5 @@ final appRouter = GoRouter(
         ),
       ],
     ),
-    GoRoute(
-      path: WelcomeScreen.routeLocation,
-      name: WelcomeScreen.routeName,
-      builder: (context, state) => const WelcomeScreen(),
-    ),
-    GoRoute(
-      path: LoginPage.routeLocation,
-      name: LoginPage.routeName,
-      builder: (context, state) => const LoginPage(),
-    ),
-    GoRoute(
-      path: SignupPage.routeLocation,
-      name: SignupPage.routeName,
-      builder: (context, state) => const SignupPage(),
-    )
   ],
 );
