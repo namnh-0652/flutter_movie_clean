@@ -3,8 +3,6 @@
   "categories": "Categories",
   "favorites": "Favorites",
   "more": "More",
-  "increment": "Increment",
-  "youClickButtonManyTimes": "You have pushed the button this many times:",
   "welcomeDescription1": "All your favourite\nMARVEL Movies & Series at\none place",
   "welcomeDescription2": "Watch Online\nor\nDownload Offline",
   "welcomeDescription3": "Create profiles for\ndiffrent members &\nget personalised\nrecommendations",
@@ -12,5 +10,8 @@
   "welcomeDescription5": "Let’s Get Started !!!",
   "continueStr": "Continue",
   "signup": "Signup",
-  "login": "Login"
+  "login": "Login",
+  "latestMovies": "Latest Movies",
+  "latestSeries": "Latest Series",
+  "trendingToday": "Trending Today"
 }
