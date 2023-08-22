@@ -3,7 +3,6 @@ import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/pages/welcome_screen/components/welcome_foreground.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -17,9 +16,8 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   late final PageController _pageController;
-  late final List<AssetGenImage> imageWelcomes;
-  int _currentIndex = 0;
-  late final List<String> titleWelcomes = [
+  late final List<AssetGenImage> welcomeImages;
+  late final List<String> welcomeDescriptions = [
     context.l10n.welcomeDescription1,
     context.l10n.welcomeDescription2,
     context.l10n.welcomeDescription3,
@@ -27,63 +25,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     context.l10n.welcomeDescription5,
     ""
   ];
+  int _currentIndex = 0;
+
   @override
   void initState() {
     _pageController = PageController();
-    imageWelcomes = Assets.images.welcomes.values;
+    welcomeImages = Assets.images.welcomes.values;
     super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.black,
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(
-                width: 360.w,
-                height: 1.sh,
-                child: PageView(
-                    onPageChanged: (index) => setCurrentIndex(index),
-                    controller: _pageController,
-                    children: imageWelcomes
-                        .map((e) => Column(
-                              children: [
-                                e.image(
-                                    fit: BoxFit.fill,
-                                    width: 360.w,
-                                    height: 600.h),
-                                const Spacer()
-                              ],
-                            ))
-                        .toList()),
-              ),
-            ],
-          ),
-          SizedBox(
-              width: 1.sw,
-              height: 1.sh,
-              child: WelcomeForeground(
-                pageController: _pageController,
-                description: titleWelcomes[_currentIndex],
-                isLastItem: _currentIndex == titleWelcomes.length - 1,
-                pageCount: titleWelcomes.length,
-                btnContinueClicked: () {
-                  setCurrentIndex(_currentIndex + 1);
-                  goToPage(_currentIndex);
-                },
-              ))
-        ],
-      ),
-    );
-  }
-
-  setCurrentIndex(int index) {
-    setState(() {
-      _currentIndex = index % imageWelcomes.length;
-    });
   }
 
   @override
@@ -92,13 +40,41 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     super.dispose();
   }
 
-  void goToPage(int index) {
-    if (_pageController.hasClients) {
-      _pageController.animateToPage(
-        index,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.black,
+      body: Stack(
+        children: [
+          PageView(
+            physics: const ClampingScrollPhysics(),
+            onPageChanged: (index) => setCurrentIndex(index),
+            controller: _pageController,
+            children: welcomeImages
+                .map(
+                  (e) => Column(
+                    children: [
+                      Image.asset(e.path, fit: BoxFit.fitWidth),
+                      Expanded(child: Container(color: Colors.black))
+                    ],
+                  ),
+                )
+                .toList(),
+          ),
+          WelcomeForeground(
+            pageController: _pageController,
+            description: welcomeDescriptions[_currentIndex],
+            isLastItem: _currentIndex == welcomeDescriptions.length - 1,
+            pageCount: welcomeDescriptions.length,
+          )
+        ],
+      ),
+    );
+  }
+
+  setCurrentIndex(int index) {
+    setState(() {
+      _currentIndex = index % welcomeImages.length;
+    });
   }
 }

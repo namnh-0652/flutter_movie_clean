@@ -30,6 +30,7 @@ final class InputOptions {
 final class PrimaryTextField extends StatelessWidget {
   const PrimaryTextField({
     super.key,
+    this.controller,
     this.textStyle,
     this.hintStyle,
     this.errorStyle,
@@ -42,6 +43,7 @@ final class PrimaryTextField extends StatelessWidget {
     this.onChanged,
     this.validator,
   });
+  final TextEditingController? controller;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
   final TextStyle? errorStyle;
@@ -59,11 +61,13 @@ final class PrimaryTextField extends StatelessWidget {
     return SizedBox(
       width: options?.width,
       child: TextFormField(
+        controller: controller,
         validator: validator,
         enabled: options?.enabled ?? true,
         style: textStyle ??
             TextStyle(
               fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
               color: AppColors.black,
             ),
         expands: options?.expands ?? false,
