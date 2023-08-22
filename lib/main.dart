@@ -5,15 +5,23 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_movie_clean/configs/env_configs.dart';
 import 'package:flutter_movie_clean/shared/themes/text_themes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_movie_clean/di/app_provider.dart';
 import 'package:flutter_movie_clean/route/app_router.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await loadEnvConfigs();
+  final sharedPrefs = await SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
   );
-  runApp(const MyApp());
+  runApp(ProviderScope(
+    overrides: [sharedPrefsProvider.overrideWithValue(sharedPrefs)],
+    child: const MyApp(),
+  ));
 }
 
 Future<void> loadEnvConfigs() async {

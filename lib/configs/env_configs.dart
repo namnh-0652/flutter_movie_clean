@@ -6,4 +6,8 @@ final class EnvConfigs {
   }
 
   static final String currentEnvironment = dotenv.get("ENVIRONMENT");
+
+  static final String baseUrl = dotenv.get("BASE_URL");
+
+  static final String imageBaseUrl = dotenv.get("IMAGE_BASE_URL");
 }
