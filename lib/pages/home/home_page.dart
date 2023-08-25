@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_clean/components/avatar_frame.dart';
+import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/pages/home/components/carousel_page_view.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   static const String routeLocation = "/home";
   static const String routeName = "home";
 
   @override
-  State<StatefulWidget> createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
+class HomePageState extends ConsumerState<HomePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(homeViewModelProvider).getLatestMovies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,16 +93,29 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildLatestMovies() {
-    return CarouselPageView.builder(
-      height: 204.h,
-      itemCount: _posters.length,
-      itemBuilder: (context, index) {
-        return Image.network(_posters[index], fit: BoxFit.cover);
-      },
-    );
+    return Consumer(builder: (context, ref, child) {
+      final latestMovies = ref.watch(
+        homeViewModelProvider.select((value) => value.nowPlayingMovies),
+      );
+      return latestMovies.maybeWhen(
+        data: (movies) {
+          return CarouselPageView.builder(
+            height: 204.h,
+            itemCount: movies.length,
+            itemBuilder: (context, index) {
+              return Image.network(
+                movies[index].backdropPath ?? '',
+                fit: BoxFit.cover,
+              );
+            },
+          );
+        },
+        orElse: () => const SizedBox(),
+      );
+    });
   }
 
-  _buildLatestSeries() {
+  Widget _buildLatestSeries() {
     return CarouselPageView.builder(
       height: 204.h,
       itemCount: _posters.length,
