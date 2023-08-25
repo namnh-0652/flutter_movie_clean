@@ -4,15 +4,15 @@ import 'package:data/repository/source/remote/api/middleware/auth_interceptor.da
 import 'package:data/repository/source/remote/api/middleware/pretty_log_interceptor.dart';
 import 'package:data/repository/source/remote/api/un_auth_api.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_movie_clean/configs/env_configs.dart';
 import 'package:flutter_movie_clean/di/app_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// UnAuthApi providers
 
 final unAuthDioProvider = Provider<Dio>((ref) {
+  final envConfigs = ref.watch(envConfigsProvider);
   return DioBuilder.createDio(
-    options: BaseOptions(baseUrl: EnvConfigs.baseUrl),
+    options: BaseOptions(baseUrl: envConfigs.baseUrl),
   );
 });
 
@@ -23,8 +23,9 @@ final unAuthApiProvider = Provider<UnAuthApi>((ref) {
 /// AuthApi providers
 
 final authDioProvider = Provider<Dio>((ref) {
+  final envConfigs = ref.watch(envConfigsProvider);
   return DioBuilder.createDio(
-    options: BaseOptions(baseUrl: EnvConfigs.baseUrl),
+    options: BaseOptions(baseUrl: envConfigs.baseUrl),
     interceptors: [
       ref.watch(authInterceptorProvider),
       ref.watch(logInterceptorProvider),

@@ -3,13 +3,16 @@ import 'package:data/model/movie_data.dart';
 import 'package:domain/model/movie.dart';
 
 class MovieMapper extends BaseMapper<MovieData, Movie> {
-  // TODO Update base image url later
+  MovieMapper(this.baseImageUrl);
+
+  final String baseImageUrl;
+
   @override
   Movie map(MovieData data) {
     return Movie(
       id: data.id,
-      posterPath: "https://image.tmdb.org/t/p/w500${data.posterPath ?? ""}",
-      backdropPath: "https://image.tmdb.org/t/p/w500${data.backdropPath ?? ""}",
+      posterPath: "$baseImageUrl${data.posterPath ?? ""}",
+      backdropPath: "$baseImageUrl${data.backdropPath ?? ""}",
       originalTitle: data.originalTitle,
       title: data.title,
       overview: data.overview,
