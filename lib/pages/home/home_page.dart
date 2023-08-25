@@ -4,6 +4,8 @@ import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/pages/home/components/carousel_page_view.dart';
+import 'package:flutter_movie_clean/pages/home/components/skeleton_carousel_movies.dart';
+import 'package:flutter_movie_clean/pages/home/components/skeleton_trending_movies.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -26,7 +28,10 @@ class HomePageState extends ConsumerState<HomePage>
   @override
   void initState() {
     super.initState();
-    ref.read(homeViewModelProvider).getLatestMovies();
+    final viewModel = ref.read(homeViewModelProvider);
+    viewModel.getLatestMovies();
+    viewModel.getLatestSeries();
+    viewModel.getTrendingMovies();
   }
 
   @override
@@ -43,7 +48,8 @@ class HomePageState extends ConsumerState<HomePage>
             _buildHeadingTitle(context.l10n.latestSeries),
             _buildLatestSeries(),
             _buildHeadingTitle(context.l10n.trendingToday),
-            _buildTrendingMovies(),
+            _buildTrendingToday(),
+            const SizedBox(height: 24),
           ],
         ),
       ),
@@ -95,7 +101,7 @@ class HomePageState extends ConsumerState<HomePage>
   Widget _buildLatestMovies() {
     return Consumer(builder: (context, ref, child) {
       final latestMovies = ref.watch(
-        homeViewModelProvider.select((value) => value.nowPlayingMovies),
+        homeViewModelProvider.select((value) => value.latestMovies),
       );
       return latestMovies.maybeWhen(
         data: (movies) {
@@ -104,56 +110,71 @@ class HomePageState extends ConsumerState<HomePage>
             itemCount: movies.length,
             itemBuilder: (context, index) {
               return Image.network(
-                movies[index].backdropPath ?? '',
+                movies[index].posterPath ?? '',
                 fit: BoxFit.cover,
               );
             },
           );
         },
-        orElse: () => const SizedBox(),
+        orElse: () => const SkeletonCarouselMovies(),
       );
     });
   }
 
   Widget _buildLatestSeries() {
-    return CarouselPageView.builder(
-      height: 204.h,
-      itemCount: _posters.length,
-      itemBuilder: (context, index) {
-        return Image.network(_posters[index], fit: BoxFit.cover);
-      },
-    );
-  }
-
-  Widget _buildTrendingMovies() {
-    return SizedBox(
-      height: 150.h,
-      child: ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        clipBehavior: Clip.none,
-        scrollDirection: Axis.horizontal,
-        itemCount: _posters.length,
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(width: 12.w);
-        },
-        itemBuilder: (context, index) {
-          return Image.network(
-            _posters[index],
-            width: 100.w,
-            height: 150.h,
-            fit: BoxFit.cover,
+    return Consumer(builder: (context, ref, child) {
+      final latestSeries = ref.watch(
+        homeViewModelProvider.select((value) => value.latestSeries),
+      );
+      return latestSeries.maybeWhen(
+        data: (series) {
+          return CarouselPageView.builder(
+            height: 204.h,
+            itemCount: series.length,
+            itemBuilder: (context, index) {
+              return Image.network(
+                series[index].posterPath ?? '',
+                fit: BoxFit.cover,
+              );
+            },
           );
         },
-      ),
+        orElse: () => const SkeletonCarouselMovies(),
+      );
+    });
+  }
+
+  Widget _buildTrendingToday() {
+    return SizedBox(
+      width: 204.h,
+      height: 150.h,
+      child: Consumer(builder: (context, ref, child) {
+        final trendingMovies = ref.watch(
+          homeViewModelProvider.select((value) => value.trendingMovies),
+        );
+        return trendingMovies.maybeWhen(
+          data: (movies) {
+            return ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              clipBehavior: Clip.none,
+              scrollDirection: Axis.horizontal,
+              itemCount: movies.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(width: 12.w);
+              },
+              itemBuilder: (context, index) {
+                return Image.network(
+                  movies[index].posterPath ?? "",
+                  width: 100.w,
+                  height: 150.h,
+                  fit: BoxFit.cover,
+                );
+              },
+            );
+          },
+          orElse: () => const SkeletonTrendingMovies(),
+        );
+      }),
     );
   }
 }
-
-// TODO Fake data. Remove later
-List<String> _posters = [
-  "https://w0.peakpx.com/wallpaper/698/738/HD-wallpaper-one-piece-strong-world-movie-action-zorro-franky-nico-robin-brook-one-piece-monkey-d-ruffy-strong-world-anime-luffy-ten-tony-chopper-lysopp-10th-nami-adventure-sanji-eiichiro-oda.jpg",
-  "https://w0.peakpx.com/wallpaper/698/738/HD-wallpaper-one-piece-strong-world-movie-action-zorro-franky-nico-robin-brook-one-piece-monkey-d-ruffy-strong-world-anime-luffy-ten-tony-chopper-lysopp-10th-nami-adventure-sanji-eiichiro-oda.jpg",
-  "https://w0.peakpx.com/wallpaper/698/738/HD-wallpaper-one-piece-strong-world-movie-action-zorro-franky-nico-robin-brook-one-piece-monkey-d-ruffy-strong-world-anime-luffy-ten-tony-chopper-lysopp-10th-nami-adventure-sanji-eiichiro-oda.jpg",
-  "https://w0.peakpx.com/wallpaper/698/738/HD-wallpaper-one-piece-strong-world-movie-action-zorro-franky-nico-robin-brook-one-piece-monkey-d-ruffy-strong-world-anime-luffy-ten-tony-chopper-lysopp-10th-nami-adventure-sanji-eiichiro-oda.jpg",
-  "https://w0.peakpx.com/wallpaper/698/738/HD-wallpaper-one-piece-strong-world-movie-action-zorro-franky-nico-robin-brook-one-piece-monkey-d-ruffy-strong-world-anime-luffy-ten-tony-chopper-lysopp-10th-nami-adventure-sanji-eiichiro-oda.jpg",
-];
