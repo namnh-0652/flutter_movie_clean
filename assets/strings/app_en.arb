@@ -30,5 +30,11 @@
   "emptyEmail": "Please enter correct email format",
   "wrongEmail": "Incorrect email format",
   "emptyPassword": "Please enter your password",
-  "wrongPassword": "Password is not strong enough"
+  "wrongPassword": "Password is not strong enough",
+  "movies": "Movies",
+  "series": "Series",
+  "newest": "Newest",
+  "oldest": "Oldest",
+  "top": "Top",
+  "order": "Order"
 }

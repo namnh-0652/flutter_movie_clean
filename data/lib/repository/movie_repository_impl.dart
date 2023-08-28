@@ -30,8 +30,7 @@ class MovieRepositoryImpl extends MovieRepository {
 
   @override
   Future<List<Movie>> getTrendingMovies(String language) async {
-    final movies =
-        await movieRemoteDataSource.getTrendingMovies(language);
+    final movies = await movieRemoteDataSource.getTrendingMovies(language);
     return movieMapper.mapList(movies);
   }
 }
