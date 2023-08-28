@@ -3,5 +3,9 @@ import 'package:flutter_movie_clean/pages/home/home_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final homeViewModelProvider = ChangeNotifierProvider.autoDispose<HomeViewModel>(
-  (ref) => HomeViewModel(ref.watch(getNowPlayingMoviesUseCaseProvider)),
+  (ref) => HomeViewModel(
+    ref.watch(getLatestMoviesUseCaseProvider),
+    ref.watch(getLatestSeriesUseCaseProvider),
+    ref.watch(getTrendingMoviesUseCaseProvider),
+  ),
 );

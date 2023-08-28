@@ -13,5 +13,6 @@ final movieRepositoryProvider = Provider<MovieRepository>((ref) {
   return MovieRepositoryImpl(
     ref.watch(movieRemoteDataSourceProvider),
     ref.watch(movieMapperProvider),
+    ref.watch(tvSeriesMapperProvider),
   );
 });
