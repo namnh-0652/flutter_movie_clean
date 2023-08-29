@@ -2,6 +2,7 @@ import 'package:data/mapper/movie_mapper.dart';
 import 'package:data/mapper/tv_series_mapper.dart';
 import 'package:data/repository/source/remote/movie_remote_data_source.dart';
 import 'package:domain/model/movie.dart';
+import 'package:domain/model/paging_data.dart';
 import 'package:domain/model/tv_series.dart';
 import 'package:domain/repository/movie_repository.dart';
 
@@ -32,5 +33,33 @@ class MovieRepositoryImpl extends MovieRepository {
   Future<List<Movie>> getTrendingMovies(String language) async {
     final movies = await movieRemoteDataSource.getTrendingMovies(language);
     return movieMapper.mapList(movies);
+  }
+
+  @override
+  Future<PagingData<Movie>> getSortedMovies(
+    String sortByValue,
+    int page,
+  ) async {
+    final response =
+        await movieRemoteDataSource.getSortedMovies(sortByValue, page);
+    return PagingData(
+      response.page,
+      response.totalPages,
+      movieMapper.mapList(response.results),
+    );
+  }
+
+  @override
+  Future<PagingData<TvSeries>> getSortedSeries(
+    String sortByValue,
+    int page,
+  ) async {
+    final response =
+        await movieRemoteDataSource.getSortedSeries(sortByValue, page);
+    return PagingData(
+      response.page,
+      response.totalPages,
+      tvSeriesMapper.mapList(response.results),
+    );
   }
 }
