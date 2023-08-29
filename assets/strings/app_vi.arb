@@ -32,5 +32,11 @@
   "emptyEmail": "Vui lòng nhập email",
   "wrongEmail": "Email chưa đúng",
   "emptyPassword": "Vui lòng nhập mật khẩu",
-  "wrongPassword": "Mật khẩu chưa đủ mạnh"
+  "wrongPassword": "Mật khẩu chưa đủ mạnh",
+  "movies": "Phim lẻ",
+  "series": "Series",
+  "newest": "Mới nhất",
+  "oldest": "Cũ nhất",
+  "top": "Top",
+  "order": "Order"
 }
