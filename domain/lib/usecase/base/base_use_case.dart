@@ -9,7 +9,7 @@ abstract class BaseUseCase<Input extends BaseInput, Output> {
     try {
       final data = await buildUseCase(input);
       block.callSuccess(data);
-    } on Exception catch (e) {
+    } catch (e) {
       block.callError(e);
     }
   }

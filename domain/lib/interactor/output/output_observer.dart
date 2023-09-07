@@ -1,7 +1,7 @@
 class OutputObserver<Output> {
   Function()? _onSubscribe;
   Function(Output)? _onSuccess;
-  Function(Exception)? _onError;
+  Function(Object)? _onError;
 
   void onSubscribe(Function() block) {
     _onSubscribe = block;
@@ -11,7 +11,7 @@ class OutputObserver<Output> {
     _onSuccess = block;
   }
 
-  void onError(Function(Exception)? block) {
+  void onError(Function(Object)? block) {
     _onError = block;
   }
 
@@ -19,5 +19,5 @@ class OutputObserver<Output> {
 
   void callSuccess(Output output) => _onSuccess?.call(output);
 
-  void callError(Exception error) => _onError?.call(error);
+  void callError(Object error) => _onError?.call(error);
 }

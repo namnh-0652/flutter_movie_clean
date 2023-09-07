@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_clean/components/app_loading.dart';
 import 'package:flutter_movie_clean/components/avatar_frame.dart';
 import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
@@ -40,16 +41,26 @@ class HomePageState extends ConsumerState<HomePage>
     return Material(
       child: Container(
         color: AppColors.black,
-        child: ListView(
+        child: Stack(
           children: [
-            _buildTopPage(),
-            _buildHeadingTitle(context.l10n.latestMovies),
-            _buildLatestMovies(),
-            _buildHeadingTitle(context.l10n.latestSeries),
-            _buildLatestSeries(),
-            _buildHeadingTitle(context.l10n.trendingToday),
-            _buildTrendingToday(),
-            const SizedBox(height: 24),
+            ListView(
+              children: [
+                _buildTopPage(),
+                _buildHeadingTitle(context.l10n.latestMovies),
+                _buildLatestMovies(),
+                _buildHeadingTitle(context.l10n.latestSeries),
+                _buildLatestSeries(),
+                _buildHeadingTitle(context.l10n.trendingToday),
+                _buildTrendingToday(),
+                const SizedBox(height: 24),
+              ],
+            ),
+            Consumer(builder: (context, ref, child) {
+              final isLoading = ref.watch(
+                homeViewModelProvider.select((value) => value.isLoading),
+              );
+              return AppLoading(isLoading: isLoading);
+            }),
           ],
         ),
       ),
