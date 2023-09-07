@@ -4,8 +4,11 @@
     <color name="black">#000000</color>
     <color name="crimson_approx">#ED1B24</color>
     <color name="black50">#80000000</color>
+    <color name="white15">#26FFFFFF</color>
+    <color name="white25">#40FFFFFF</color>
     <color name="white50">#80FFFFFF</color>
     <color name="white70">#B2FFFFFF</color>
+    <color name="white80">#CCFFFFFF</color>
     <color name="light_mine_shaft">#3F3F3F</color>
     <color name="mine_shaft">#3A3A3A</color>
     <color name="tundora">#4A4A4A</color>
