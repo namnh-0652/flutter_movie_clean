@@ -7,8 +7,10 @@ import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/pages/home/components/carousel_page_view.dart';
 import 'package:flutter_movie_clean/pages/home/components/skeleton_carousel_movies.dart';
 import 'package:flutter_movie_clean/pages/home/components/skeleton_trending_movies.dart';
+import 'package:flutter_movie_clean/pages/moviedetail/movie_detail_page.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -174,11 +176,14 @@ class HomePageState extends ConsumerState<HomePage>
                 return SizedBox(width: 12.w);
               },
               itemBuilder: (context, index) {
-                return Image.network(
-                  movies[index].posterPath ?? "",
-                  width: 100.w,
-                  height: 150.h,
-                  fit: BoxFit.cover,
+                return GestureDetector(
+                  onTap: () => context.push(MovieDetailPage.routeLocation, extra: movies[index]),
+                  child: Image.network(
+                    movies[index].posterPath ?? "",
+                    width: 100.w,
+                    height: 150.h,
+                    fit: BoxFit.cover,
+                  ),
                 );
               },
             );

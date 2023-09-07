@@ -36,5 +36,10 @@
   "newest": "Newest",
   "oldest": "Oldest",
   "top": "Top",
-  "order": "Order"
+  "order": "Order",
+  "download": "Download",
+  "plus" : "+",
+  "addToWatchList": "Add to Watchlist",
+  "trailer": "Trailer",
+  "cast": "Cast"
 }
