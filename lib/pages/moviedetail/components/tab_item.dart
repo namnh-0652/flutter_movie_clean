@@ -3,7 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../gen/colors.gen.dart';
 
 class TabItem extends StatelessWidget {
-  const TabItem({super.key, required this.image, required this.title, required this.content, });
+  const TabItem({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.content,
+  });
   final String image;
   final String title;
   final String content;
@@ -13,14 +18,15 @@ class TabItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.network(image,
-            width: 120.w, height: 150.w, fit: BoxFit.cover),
+        Image.network(image, width: 120.w, height: 150.w, fit: BoxFit.cover),
         SizedBox(width: 16.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 12.h,),
+            SizedBox(
+              height: 12.h,
+            ),
             Text(
               title,
               style: TextStyle(

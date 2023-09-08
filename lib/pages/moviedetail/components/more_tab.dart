@@ -11,6 +11,7 @@ class MoreTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      shrinkWrap: true,
       padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
       itemCount: recommendMovies.length,
       separatorBuilder: (context, index) => Divider(),

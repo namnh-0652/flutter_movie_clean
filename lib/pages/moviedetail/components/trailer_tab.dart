@@ -15,7 +15,9 @@ class TrailerTab extends StatelessWidget {
           child: Image.network(
             width: 1.sw,
             height: 265.h,
-            backdropPath, fit: BoxFit.cover,),
+            backdropPath,
+            fit: BoxFit.cover,
+          ),
         ),
         Center(
           child: Assets.images.icPlayWhite.svg(),

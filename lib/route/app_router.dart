@@ -36,7 +36,8 @@ final appRouter = GoRouter(
         GoRoute(
           path: MovieDetailPage.routeLocation.toSubRouteLocation(),
           name: MovieDetailPage.routeName,
-          builder: (context, state) => MovieDetailPage(movie: state.extra as Movie),
+          builder: (context, state) =>
+              MovieDetailPage(movie: state.extra as Movie),
         ),
       ],
     ),

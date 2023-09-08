@@ -26,6 +26,7 @@ class _MovieDetailPageState extends State<MovieDetailPage>
   late final TabController _tabController;
   bool fixedScroll = false;
   List<Widget> tabViews = [];
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -179,17 +180,35 @@ class _MovieDetailPageState extends State<MovieDetailPage>
       labelStyle: TextStyle(fontWeight: FontWeight.w800, fontSize: 16.sp),
       indicatorPadding: const EdgeInsets.all(0),
       indicatorColor: AppColors.crimsonApprox,
+      onTap: (index) {
+        setState(() {
+          _selectedIndex = index;
+          _tabController.animateTo(index);
+        });
+      },
     );
   }
 
   Widget _buildBottom2() {
-    return SizedBox(
-      height: 300.h,
-      child: TabBarView(controller: _tabController, children: [
-        TrailerTab(backdropPath: widget.movie.backdropPath ?? ""),
-        CastTab(casts: castsData,),
-        MoreTab(recommendMovies: moresData)
-      ]),
+    return IndexedStack(
+      index: _selectedIndex,
+      children: <Widget>[
+        Visibility(
+          maintainState: true,
+          visible: _selectedIndex == 0,
+          child: TrailerTab(backdropPath: widget.movie.backdropPath ?? ""),
+        ),
+        Visibility(
+          maintainState: true,
+          visible: _selectedIndex == 1,
+          child: CastTab(casts: castsData),
+        ),
+        Visibility(
+          maintainState: true,
+          visible: _selectedIndex == 2,
+          child: MoreTab(recommendMovies: moresData),
+        ),
+      ],
     );
   }
 

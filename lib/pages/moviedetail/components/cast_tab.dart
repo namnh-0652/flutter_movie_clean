@@ -14,6 +14,7 @@ class CastTab extends StatelessWidget {
     return SizedBox(
       width: 1.sh,
       child: ListView.separated(
+          shrinkWrap: true,
           padding: EdgeInsets.symmetric(vertical: 32.h, horizontal: 16.w),
           physics: const NeverScrollableScrollPhysics(),
           clipBehavior: Clip.none,
