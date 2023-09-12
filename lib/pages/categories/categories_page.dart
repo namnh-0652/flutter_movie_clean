@@ -7,7 +7,6 @@ import 'package:flutter_movie_clean/model/poster.dart';
 import 'package:flutter_movie_clean/pages/categories/components/filter_chip_group.dart';
 import 'package:flutter_movie_clean/pages/categories/components/segmented_control.dart';
 import 'package:flutter_movie_clean/shared/constant/constant.dart';
-import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -21,7 +20,9 @@ class CategoriesPage extends ConsumerStatefulWidget {
 
 class CategoriesPageState extends ConsumerState<CategoriesPage>
     with AutomaticKeepAliveClientMixin {
-  final _pagingController = PagingController<int, Poster>(firstPageKey: 1);
+  final _pagingController = PagingController<int, Poster>(
+    firstPageKey: initialPage,
+  );
 
   @override
   bool get wantKeepAlive => true;
@@ -30,23 +31,19 @@ class CategoriesPageState extends ConsumerState<CategoriesPage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      initData();
+      _initData();
     });
   }
 
-  void initData() {
+  void _initData() {
     final viewModel = ref.read(categoriesViewModelProvider.notifier);
-    viewModel.getSortedMovies(viewModel.selectedSortType.value, initialPage);
+    viewModel.fetchPostersByCategory(initialPage);
     _pagingController.addPageRequestListener((pageKey) {
-      if (viewModel.isMoviesCategorySelected()) {
-        viewModel.getSortedMovies(viewModel.selectedSortType.value, pageKey);
-      } else {
-        viewModel.getSortedSeries(viewModel.selectedSortType.value, pageKey);
-      }
+      viewModel.fetchPostersByCategory(pageKey);
     });
   }
 
-  void observePosters() {
+  void _observePosters() {
     ref.listen(
       categoriesViewModelProvider.select((value) => value.postersPagingData),
       (previous, next) {
@@ -60,7 +57,7 @@ class CategoriesPageState extends ConsumerState<CategoriesPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    observePosters();
+    _observePosters();
     return Scaffold(
       backgroundColor: AppColors.black,
       body: Column(
@@ -79,24 +76,15 @@ class CategoriesPageState extends ConsumerState<CategoriesPage>
 
   Widget _buildTopSegmentedControl() {
     return SegmentedControl(
-        labels: CategoryType.values.map((e) => e.getLabel(context)).toList(),
-        onSegmentChanged: (index) {
-          final viewModel = ref.read(categoriesViewModelProvider.notifier);
-          if (viewModel.isSameCategory(CategoryType.values[index])) return;
-          viewModel.selectedCategoryType = CategoryType.values[index];
-          if (viewModel.isMoviesCategorySelected()) {
-            viewModel.getSortedMovies(
-              viewModel.selectedSortType.value,
-              initialPage,
-            );
-          } else {
-            viewModel.getSortedSeries(
-              viewModel.selectedSortType.value,
-              initialPage,
-            );
-          }
-          _pagingController.refresh();
-        });
+      labels: CategoryType.values.map((e) => e.getLabel(context)).toList(),
+      onSegmentChanged: (index) {
+        final viewModel = ref.read(categoriesViewModelProvider.notifier);
+        if (viewModel.isSameCategory(CategoryType.values[index])) return;
+        viewModel.selectedCategoryType = CategoryType.values[index];
+        viewModel.fetchPostersByCategory(initialPage);
+        _pagingController.refresh();
+      },
+    );
   }
 
   Widget _buildFilterChipGroups() {
@@ -106,17 +94,7 @@ class CategoriesPageState extends ConsumerState<CategoriesPage>
         final viewModel = ref.read(categoriesViewModelProvider.notifier);
         if (viewModel.isSameSortType(SortType.values[index])) return;
         viewModel.selectedSortType = SortType.values[index];
-        if (viewModel.isMoviesCategorySelected()) {
-          viewModel.getSortedMovies(
-            viewModel.selectedSortType.value,
-            initialPage,
-          );
-        } else {
-          viewModel.getSortedSeries(
-            viewModel.selectedSortType.value,
-            initialPage,
-          );
-        }
+        viewModel.fetchPostersByCategory(initialPage);
         _pagingController.refresh();
       },
     );

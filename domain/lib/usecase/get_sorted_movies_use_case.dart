@@ -12,13 +12,13 @@ class GetSortedMoviesUseCase
 
   @override
   Future<PagingData<Movie>> buildUseCase(GetSortedMoviesInput input) {
-    return movieRepository.getSortedMovies(input.sortByValue, input.page);
+    return movieRepository.getSortedMovies(input.sortBy, input.page);
   }
 }
 
 class GetSortedMoviesInput extends BaseInput {
-  const GetSortedMoviesInput({required this.sortByValue, this.page = 1});
+  const GetSortedMoviesInput({required this.sortBy, this.page = 1});
 
-  final String sortByValue;
+  final String sortBy;
   final int page;
 }

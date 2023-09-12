@@ -31,16 +31,16 @@ class MovieRemoteDataSource {
   }
 
   Future<PagingResponse<MovieData>> getSortedMovies(
-    String sortByValue,
+    String sortBy,
     int page,
   ) async {
-    return authApi.execute((api) => api.getSortedMovies(sortByValue, page));
+    return authApi.execute((api) => api.getSortedMovies(sortBy, page));
   }
 
   Future<PagingResponse<TvSeriesData>> getSortedSeries(
-    String sortByValue,
+    String sortBy,
     int page,
   ) async {
-    return authApi.execute((api) => api.getSortedSeries(sortByValue, page));
+    return authApi.execute((api) => api.getSortedSeries(sortBy, page));
   }
 }

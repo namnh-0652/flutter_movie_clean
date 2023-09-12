@@ -37,11 +37,10 @@ class MovieRepositoryImpl extends MovieRepository {
 
   @override
   Future<PagingData<Movie>> getSortedMovies(
-    String sortByValue,
+    String sortBy,
     int page,
   ) async {
-    final response =
-        await movieRemoteDataSource.getSortedMovies(sortByValue, page);
+    final response = await movieRemoteDataSource.getSortedMovies(sortBy, page);
     return PagingData(
       response.page,
       response.totalPages,
@@ -51,11 +50,10 @@ class MovieRepositoryImpl extends MovieRepository {
 
   @override
   Future<PagingData<TvSeries>> getSortedSeries(
-    String sortByValue,
+    String sortBy,
     int page,
   ) async {
-    final response =
-        await movieRemoteDataSource.getSortedSeries(sortByValue, page);
+    final response = await movieRemoteDataSource.getSortedSeries(sortBy, page);
     return PagingData(
       response.page,
       response.totalPages,

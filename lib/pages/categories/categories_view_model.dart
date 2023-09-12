@@ -1,4 +1,3 @@
-import 'package:domain/interactor/output/output_observer.dart';
 import 'package:domain/model/paging_data.dart';
 import 'package:domain/usecase/get_sorted_movies_use_case.dart';
 import 'package:domain/usecase/get_sorted_series_use_case.dart';
@@ -24,51 +23,53 @@ class CategoriesViewModel extends BaseViewModel {
   CategoryType selectedCategoryType = CategoryType.movies;
   SortType selectedSortType = SortType.newest;
 
+  void fetchPostersByCategory(int page) {
+    if (_isMoviesCategorySelected()) {
+      getSortedMovies(selectedSortType.value, page);
+    } else {
+      getSortedSeries(selectedSortType.value, page);
+    }
+  }
+
   void getSortedMovies(String sortBy, int page) async {
-    await _getSortedMoviesUseCase.call(
-      GetSortedMoviesInput(sortByValue: sortBy, page: page),
-      OutputObserver()
-        ..onSubscribe(() {
-          _postersPagingData = const AsyncValue.loading();
-          notifyListeners();
-        })
-        ..onSuccess((pagingData) {
-          final posterPagingData = PagingData(
-            pagingData.page,
-            pagingData.totalPage,
-            pagingData.data.map((e) => Poster.fromMovie(e)).toList(),
-          );
-          _postersPagingData = AsyncValue.data(posterPagingData);
-          notifyListeners();
-        })
-        ..onError((error) {
-          _postersPagingData = AsyncValue.error(error, StackTrace.empty);
-          notifyListeners();
-        }),
+    launchUseCase(
+      useCase: _getSortedMoviesUseCase,
+      input: GetSortedMoviesInput(sortBy: sortBy, page: page),
+      onSubscribe: () {
+        _postersPagingData = const AsyncValue.loading();
+      },
+      onSuccess: (pagingData) {
+        final posterPagingData = PagingData(
+          pagingData.page,
+          pagingData.totalPage,
+          pagingData.data.map((e) => Poster.fromMovie(e)).toList(),
+        );
+        _postersPagingData = AsyncValue.data(posterPagingData);
+      },
+      onError: (error) {
+        _postersPagingData = AsyncValue.error(error, StackTrace.empty);
+      },
     );
   }
 
   void getSortedSeries(String sortBy, int page) async {
-    await _getSortedSeriesUseCase.call(
-      GetSortedSeriesInput(sortByValue: sortBy, page: page),
-      OutputObserver()
-        ..onSubscribe(() {
-          _postersPagingData = const AsyncValue.loading();
-          notifyListeners();
-        })
-        ..onSuccess((pagingData) {
-          final posterPagingData = PagingData(
-            pagingData.page,
-            pagingData.totalPage,
-            pagingData.data.map((e) => Poster.fromTvSeries(e)).toList(),
-          );
-          _postersPagingData = AsyncValue.data(posterPagingData);
-          notifyListeners();
-        })
-        ..onError((error) {
-          _postersPagingData = AsyncValue.error(error, StackTrace.empty);
-          notifyListeners();
-        }),
+    launchUseCase(
+      useCase: _getSortedSeriesUseCase,
+      input: GetSortedSeriesInput(sortByValue: sortBy, page: page),
+      onSubscribe: () {
+        _postersPagingData = const AsyncValue.loading();
+      },
+      onSuccess: (pagingData) {
+        final posterPagingData = PagingData(
+          pagingData.page,
+          pagingData.totalPage,
+          pagingData.data.map((e) => Poster.fromTvSeries(e)).toList(),
+        );
+        _postersPagingData = AsyncValue.data(posterPagingData);
+      },
+      onError: (error) {
+        _postersPagingData = AsyncValue.error(error, StackTrace.empty);
+      },
     );
   }
 
@@ -80,7 +81,7 @@ class CategoriesViewModel extends BaseViewModel {
     return selectedSortType == sortType;
   }
 
-  bool isMoviesCategorySelected() {
+  bool _isMoviesCategorySelected() {
     return selectedCategoryType == CategoryType.movies;
   }
 }

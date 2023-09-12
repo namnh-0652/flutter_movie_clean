@@ -9,7 +9,7 @@ abstract class MovieRepository {
 
   Future<List<Movie>> getTrendingMovies(String language);
 
-  Future<PagingData<Movie>> getSortedMovies(String sortByValue, int page);
+  Future<PagingData<Movie>> getSortedMovies(String sortBy, int page);
 
-  Future<PagingData<TvSeries>> getSortedSeries(String sortByValue, int page);
+  Future<PagingData<TvSeries>> getSortedSeries(String sortBy, int page);
 }
