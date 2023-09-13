@@ -132,8 +132,12 @@ class _LoginPageState extends State<LoginPage> {
         title: context.l10n.login,
         textStyle: TextStyle(fontSize: 18.sp, color: AppColors.white),
         onPressed: () => {
-          context.go(MainPage.routeLocation,
-              extra: {"user": _emailTextController.text})
+          if (_formKey.currentState!.validate())
+            {
+              // TODO: call login here
+              context.go(MainPage.routeLocation,
+                  extra: {"user": _emailTextController.text})
+            }
         },
       ),
     );

@@ -69,8 +69,8 @@ class _MovieDetailPageState extends State<MovieDetailPage>
 
   Widget _buildTopPage(BuildContext buildContext) {
     return SizedBox(
-      height: MediaQuery.of(buildContext).size.height * 0.6,
-      width: MediaQuery.of(buildContext).size.width,
+      height: 0.6.sh,
+      width: 1.sw,
       child: Stack(
         children: [
           ShaderMask(
@@ -200,7 +200,7 @@ class _MovieDetailPageState extends State<MovieDetailPage>
     tabViews = [
       TrailerTab(backdropPath: widget.movie.backdropPath ?? ""),
       CastTab(casts: castsData,),
-      MoreTab(recommendMovies: moresData)
+      MoreTab(similarMovies: moresData)
     ];
     return tabViews[_tabIndex];
   }
