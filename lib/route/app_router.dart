@@ -1,3 +1,4 @@
+import 'package:domain/model/movie.dart';
 import 'package:flutter_movie_clean/pages/login/login.dart';
 import 'package:flutter_movie_clean/pages/main/main_page.dart';
 import 'package:flutter_movie_clean/pages/moviedetail/movie_detail_page.dart';
@@ -27,14 +28,6 @@ final appRouter = GoRouter(
     GoRoute(
       path: MainPage.routeLocation,
       name: MainPage.routeName,
-      redirect: (context, state) {
-        var data = state.extra as Map<String, String>?;
-        var user = data?["user"];
-        if (user == null) {
-          return LoginPage.routeLocation;
-        }
-        return MainPage.routeLocation;
-      },
       builder: (context, state) {
         var data = state.extra as Map<String, String>?;
         return MainPage(user: data?["user"] ?? "");
@@ -43,7 +36,7 @@ final appRouter = GoRouter(
         GoRoute(
           path: MovieDetailPage.routeLocation.toSubRouteLocation(),
           name: MovieDetailPage.routeName,
-          builder: (context, state) => const MovieDetailPage(),
+          builder: (context, state) => MovieDetailPage(movie: state.extra as Movie),
         ),
       ],
     ),
