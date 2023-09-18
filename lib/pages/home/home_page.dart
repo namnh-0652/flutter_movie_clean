@@ -177,7 +177,9 @@ class HomePageState extends ConsumerState<HomePage>
               },
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () => context.push(MovieDetailPage.routeLocation, extra: movies[index]),
+                  onTap: () {
+                    context.push(MovieDetailPage.routeLocation, extra: movies[index].id);
+                  },
                   child: Image.network(
                     movies[index].posterPath ?? "",
                     width: 100.w,

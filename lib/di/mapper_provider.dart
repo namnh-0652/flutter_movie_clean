@@ -1,3 +1,5 @@
+import 'package:data/mapper/cast_mapper.dart';
+import 'package:data/mapper/casts_maper.dart';
 import 'package:data/mapper/movie_mapper.dart';
 import 'package:data/mapper/tv_series_mapper.dart';
 import 'package:flutter_movie_clean/di/app_provider.dart';
@@ -11,4 +13,13 @@ final movieMapperProvider = Provider<MovieMapper>((ref) {
 final tvSeriesMapperProvider = Provider<TvSeriesMapper>((ref) {
   final envConfigs = ref.watch(envConfigsProvider);
   return TvSeriesMapper(envConfigs.baseImageUrl);
+});
+
+final castsMapperProvider = Provider<CastsMapper>((ref) {
+  return CastsMapper(ref.read(castMapperProvider));
+});
+
+final castMapperProvider = Provider<CastMapper>((ref) {
+  final envConfigs = ref.watch(envConfigsProvider);
+  return CastMapper(envConfigs.baseImageUrl);
 });

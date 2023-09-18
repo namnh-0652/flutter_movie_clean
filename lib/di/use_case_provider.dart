@@ -1,8 +1,11 @@
 import 'package:domain/usecase/get_latest_movies_use_case.dart';
+import 'package:domain/usecase/get_casts_use_case.dart';
 import 'package:domain/usecase/get_latest_series_use_case.dart';
 import 'package:domain/usecase/get_sorted_movies_use_case.dart';
 import 'package:domain/usecase/get_sorted_series_use_case.dart';
 import 'package:domain/usecase/get_trending_movies_use_case.dart';
+import 'package:domain/usecase/get_similar_movies_use_case.dart';
+import 'package:domain/usecase/get_movie_detail_use_case.dart';
 import 'package:flutter_movie_clean/di/repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,4 +27,16 @@ final getSortedMoviesUseCaseProvider = Provider<GetSortedMoviesUseCase>(
 
 final getSortedSeriesUseCaseProvider = Provider<GetSortedSeriesUseCase>(
   (ref) => GetSortedSeriesUseCase(ref.watch(movieRepositoryProvider)),
+);
+
+final getMovieDetailUseCaseProvider = Provider<GetMovieDetailUseCase>(
+      (ref) => GetMovieDetailUseCase(ref.watch(movieRepositoryProvider)),
+);
+
+final getSimilarUseCaseProvider = Provider<GetSimilarMoviesUseCase>(
+  (ref) => GetSimilarMoviesUseCase(ref.watch(movieRepositoryProvider)),
+);
+
+final getCastsUseCaseProvider = Provider<GetCastsUseCase>(
+  (ref) => GetCastsUseCase(ref.watch(movieRepositoryProvider)),
 );

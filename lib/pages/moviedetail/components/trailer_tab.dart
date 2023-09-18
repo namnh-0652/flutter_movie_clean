@@ -20,6 +20,9 @@ class TrailerTab extends StatelessWidget {
               height: 265.h,
               backdropPath,
               fit: BoxFit.cover,
+              errorBuilder: (context, exception, stackTrace) {
+                return SizedBox(height: 285.h, width: 1.sw,);
+              },
             ),
           ),
           Center(

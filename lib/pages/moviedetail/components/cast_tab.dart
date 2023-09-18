@@ -26,8 +26,8 @@ class CastTab extends StatelessWidget {
             var currentItem = casts[index];
             return TabItem(
               title: currentItem.name ?? "",
-              image: currentItem.image ?? "",
-              content: currentItem.role ?? "",
+              image: currentItem.profilePath ?? "",
+              content: currentItem.character ?? "",
             );
           }),
     );

@@ -29,7 +29,7 @@ class TabItem extends StatelessWidget {
           SizedBox(height: 12.h,),
           Text(
             title,
-            maxLines: 3,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: 20.sp,
@@ -41,7 +41,7 @@ class TabItem extends StatelessWidget {
           ),
           Text(
             content,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: 20.sp,

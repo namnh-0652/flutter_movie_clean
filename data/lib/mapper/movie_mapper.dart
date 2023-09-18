@@ -11,8 +11,8 @@ class MovieMapper extends BaseMapper<MovieData, Movie> {
   Movie map(MovieData data) {
     return Movie(
       id: data.id,
-      posterPath: "$baseImageUrl${data.posterPath ?? ""}",
-      backdropPath: "$baseImageUrl${data.backdropPath ?? ""}",
+      posterPath: data.posterPath == null ? null : "$baseImageUrl${data.posterPath}",
+      backdropPath: data.backdropPath == null ? null : "$baseImageUrl${data.backdropPath}",
       originalTitle: data.originalTitle,
       title: data.title,
       overview: data.overview,
