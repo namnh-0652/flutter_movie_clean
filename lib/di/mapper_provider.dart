@@ -1,7 +1,7 @@
-import 'package:data/mapper/cast_mapper.dart';
-import 'package:data/mapper/casts_maper.dart';
-import 'package:data/mapper/movie_mapper.dart';
-import 'package:data/mapper/tv_series_mapper.dart';
+import 'package:flutter_movie_clean/data/mapper/cast_mapper.dart';
+import 'package:flutter_movie_clean/data/mapper/casts_maper.dart';
+import 'package:flutter_movie_clean/data/mapper/movie_mapper.dart';
+import 'package:flutter_movie_clean/data/mapper/tv_series_mapper.dart';
 import 'package:flutter_movie_clean/di/app_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

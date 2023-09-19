@@ -1,4 +1,4 @@
-import 'package:domain/configs/env_configs_provider.dart';
+import 'package:flutter_movie_clean/configs/env_configs_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EnvConfigsProviderImpl extends EnvConfigsProvider {
