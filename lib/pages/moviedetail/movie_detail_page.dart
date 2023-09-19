@@ -1,7 +1,6 @@
-import 'package:domain/model/cast.dart';
-import 'package:domain/model/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_clean/components/secondary_button.dart';
+import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/pages/moviedetail/components/cast_tab.dart';
 import 'package:flutter_movie_clean/pages/moviedetail/components/more_tab.dart';
@@ -9,35 +8,50 @@ import 'package:flutter_movie_clean/pages/moviedetail/components/trailer_tab.dar
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../gen/assets.gen.dart';
 
-class MovieDetailPage extends StatefulWidget {
-  const MovieDetailPage({Key? key, required this.movie}) : super(key: key);
+class MovieDetailPage extends ConsumerStatefulWidget {
+  const MovieDetailPage({super.key, required this.movieId});
   static const String routeLocation = "/movies";
   static const String routeName = "movies";
-  final Movie movie;
+
+  final int movieId;
 
   @override
-  State<MovieDetailPage> createState() => _MovieDetailPageState();
+  MovieDetailPageState createState() => MovieDetailPageState();
 }
 
-class _MovieDetailPageState extends State<MovieDetailPage>
-    with SingleTickerProviderStateMixin {
+class MovieDetailPageState extends ConsumerState<MovieDetailPage>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late final TabController _tabController;
   int _tabIndex = 0;
   List<Widget> tabViews = [];
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
+    super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
-    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initData();
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _initData() {
+    final viewModel = ref.read(movieDetailViewModelProvider(widget.movieId));
+    viewModel.getMovieDetail(widget.movieId);
+    viewModel.getCasts(widget.movieId);
+    viewModel.getSimilarMovies(widget.movieId);
   }
 
   _handleTabSelection() {
@@ -50,6 +64,7 @@ class _MovieDetailPageState extends State<MovieDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: AppColors.black,
       body: SafeArea(
@@ -68,58 +83,64 @@ class _MovieDetailPageState extends State<MovieDetailPage>
   }
 
   Widget _buildTopPage(BuildContext buildContext) {
-    return SizedBox(
-      height: 0.6.sh,
-      width: 1.sw,
-      child: Stack(
-        children: [
-          ShaderMask(
-            shaderCallback: (Rect bounds) => const LinearGradient(
+    final movie = ref
+        .watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.movie));
+    return  Consumer(
+      builder: (context, ref, child) {
+        return movie.maybeWhen(
+            data: (movie) => SizedBox(
+              height: 0.6.sh,
+              width: 1.sw,
+              child: Stack(
+                children: [
+                  ShaderMask(
+                    shaderCallback: (Rect bounds) => const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     stops: [0.0, 1.0],
-                    colors: [Colors.transparent, Colors.black])
-                .createShader(bounds),
-            blendMode: BlendMode.darken,
-            child: Image.network(
-              widget.movie.posterPath ?? "",
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.fill,
+                    colors: [Colors.transparent, Colors.black]).createShader(bounds),
+                    blendMode: BlendMode.darken,
+                    child: Image.network(
+                      movie.posterPath ?? "",
+                      width: 1.sw,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 16.h,
+                    left: 12.w,
+                    child: GestureDetector(
+                      onTap: () {
+                        buildContext.pop();
+                      },
+                      child: Assets.images.icBack.svg(),
+                    ),
+                  ),
+                  Positioned(
+                      top: 58.h,
+                      left: 64.w,
+                      right: 64.w,
+                      child: Center(
+                        child: Text(
+                          movie.title ?? "",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w800),
+                        ),
+                      )),
+                  Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 12.h,
+                      child:
+                      InkWell(onTap: () {}, child: Assets.images.icPlayRed.svg()))
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            top: 16.h,
-            left: 12.w,
-            child: GestureDetector(
-              onTap: () {
-                buildContext.pop();
-              },
-              child: Assets.images.icBack.svg(),
-            ),
-          ),
-          Positioned(
-              top: 58.h,
-              left: 64.w,
-              right: 64.w,
-              child: Center(
-                child: Text(
-                  widget.movie.title ?? "",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: AppColors.white,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w800),
-                ),
-              )),
-          Positioned(
-              left: 0,
-              right: 0,
-              bottom: 12.h,
-              child:
-                  InkWell(onTap: () {}, child: Assets.images.icPlayRed.svg()))
-        ],
-      ),
+            orElse: () => SizedBox(height: 0.6.sh, width: 1.sw,));
+      },
     );
   }
 
@@ -159,11 +180,13 @@ class _MovieDetailPageState extends State<MovieDetailPage>
   }
 
   Widget _buildOverview() {
+    final movie = ref
+        .watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.movie)).value;
     return Padding(
       padding:
           EdgeInsets.only(left: 12.w, top: 16.h, right: 12.w, bottom: 12.h),
       child: Text(
-        widget.movie.overview ?? "",
+        movie?.overview ?? "",
         style: TextStyle(
           color: AppColors.white,
           fontSize: 14.sp,
@@ -197,12 +220,21 @@ class _MovieDetailPageState extends State<MovieDetailPage>
   }
 
   Widget _buildTabContent() {
-    tabViews = [
-      TrailerTab(backdropPath: widget.movie.backdropPath ?? ""),
-      CastTab(casts: castsData,),
-      MoreTab(similarMovies: moresData)
-    ];
-    return tabViews[_tabIndex];
+    final movie = ref
+        .watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.movie))
+        .value;
+    final casts = ref
+        .watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.casts))
+        .value;
+    final movies = ref
+        .watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.similarMovies))
+        .value;
+      tabViews = [
+        TrailerTab(backdropPath: movie?.backdropPath ?? ""),
+        CastTab(casts: casts?.cast ?? List.empty()),
+        MoreTab(similarMovies: movies ?? List.empty())
+      ];
+      return tabViews[_tabIndex];
   }
 
   Widget _buildTabLabel(String label, bool hasDivider) {
@@ -232,64 +264,3 @@ class _MovieDetailPageState extends State<MovieDetailPage>
           );
   }
 }
-
-final castsData = [
-  Cast(
-      name: "Paul Batteny Paul Batteny Paul Batteny Paul Batteny Paul Batteny Paul Batteny Paul Batteny Paul Batteny",
-      image:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      role: "Vision"),
-  Cast(
-      name: "Paul Batteny",
-      image:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      role: "Vision"),
-  Cast(
-      name: "Paul Batteny",
-      image:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      role: "Vision"),
-  Cast(
-      name: "Paul Batteny",
-      image:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      role: "Vision"),
-  Cast(
-      name: "Paul Batteny",
-      image:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      role: "Vision"),
-  Cast(
-      name: "Paul Batteny",
-      image:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      role: "Vision"),
-  Cast(
-      name: "Paul Batteny",
-      image:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      role: "Vision"),
-  Cast(
-      name: "Paul Batteny",
-      image:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      role: "Vision"),
-];
-
-final moresData = [
-  Movie(
-      posterPath:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      title: "Avatar",
-      releaseDate: "2005"),
-  Movie(
-      posterPath:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      title: "Avatar2",
-      releaseDate: "2006"),
-  Movie(
-      posterPath:
-          "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
-      title: "Avatar3",
-      releaseDate: "2006")
-];

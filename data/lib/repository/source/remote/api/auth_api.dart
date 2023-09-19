@@ -1,3 +1,4 @@
+import 'package:data/model/casts_data.dart';
 import 'package:data/model/movie_data.dart';
 import 'package:data/model/tv_series_data.dart';
 import 'package:data/repository/source/remote/api/response/paging_response.dart';
@@ -44,4 +45,22 @@ abstract class AuthApi {
     @Query("include_video") bool includeVideo = false,
     @Query("language") String language = "en-US",
   });
+
+  @GET("/3/movie/{movie_id}")
+  Future<MovieData> getMovieDetail(
+    @Path("movie_id") int movieId,
+    @Query("language") String language,
+  );
+
+  @GET("/3/movie/{movie_id}/credits")
+  Future<CastsData> getCasts(
+    @Path("movie_id") int movieId,
+    @Query("language") String language,
+  );
+
+  @GET("/3/movie/{movie_id}/similar")
+  Future<PagingResponse<MovieData>> getSimilarMovies(
+    @Path("movie_id") int movieId,
+    @Query("language") String language
+  );
 }

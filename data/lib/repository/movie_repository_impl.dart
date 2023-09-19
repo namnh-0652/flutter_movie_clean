@@ -1,6 +1,8 @@
+import 'package:data/mapper/casts_maper.dart';
 import 'package:data/mapper/movie_mapper.dart';
 import 'package:data/mapper/tv_series_mapper.dart';
 import 'package:data/repository/source/remote/movie_remote_data_source.dart';
+import 'package:domain/model/casts.dart';
 import 'package:domain/model/movie.dart';
 import 'package:domain/model/paging_data.dart';
 import 'package:domain/model/tv_series.dart';
@@ -11,11 +13,13 @@ class MovieRepositoryImpl extends MovieRepository {
     this.movieRemoteDataSource,
     this.movieMapper,
     this.tvSeriesMapper,
+    this.castsMapper,
   );
 
   final MovieRemoteDataSource movieRemoteDataSource;
   final MovieMapper movieMapper;
   final TvSeriesMapper tvSeriesMapper;
+  final CastsMapper castsMapper;
 
   @override
   Future<List<Movie>> getLatestMovies(String language, int page) async {
@@ -59,5 +63,23 @@ class MovieRepositoryImpl extends MovieRepository {
       response.totalPages,
       tvSeriesMapper.mapList(response.results),
     );
+  }
+
+  @override
+  Future<Movie> getMovieDetail(int movieId, String language) async {
+    final movie = await movieRemoteDataSource.getMovieDetail(movieId, language);
+    return movieMapper.map(movie);
+  }
+
+  @override
+  Future<Casts> getCasts(int movieId, String language) async {
+    final casts = await movieRemoteDataSource.getCasts(movieId, language);
+    return castsMapper.map(casts);
+  }
+
+  @override
+  Future<List<Movie>> getSimilarMovies(int movieId, String language) async {
+    final movies = await movieRemoteDataSource.getSimilarMovies(movieId, language);
+    return movieMapper.mapList(movies);
   }
 }

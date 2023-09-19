@@ -1,3 +1,4 @@
+import 'package:data/model/casts_data.dart';
 import 'package:data/model/movie_data.dart';
 import 'package:data/model/tv_series_data.dart';
 import 'package:data/repository/source/remote/api/auth_api.dart';
@@ -42,5 +43,20 @@ class MovieRemoteDataSource {
     int page,
   ) async {
     return authApi.execute((api) => api.getSortedSeries(sortBy, page));
+  }
+
+  Future<MovieData> getMovieDetail(int movieId, String language) async {
+    return await authApi.execute((api) => api.getMovieDetail(movieId, language));
+  }
+
+  Future<CastsData> getCasts(int movieId, String language) async {
+    return await authApi.execute((api) => api.getCasts(movieId, language));
+  }
+
+  Future<List<MovieData>> getSimilarMovies(int movieId, String language) async {
+    final response = await authApi.execute(
+          (api) => api.getSimilarMovies(movieId, language),
+    );
+    return response.results;
   }
 }

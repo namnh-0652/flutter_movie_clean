@@ -1,4 +1,3 @@
-import 'package:domain/model/movie.dart';
 import 'package:flutter_movie_clean/pages/login/login.dart';
 import 'package:flutter_movie_clean/pages/main/main_page.dart';
 import 'package:flutter_movie_clean/pages/moviedetail/movie_detail_page.dart';
@@ -47,7 +46,7 @@ final appRouter = GoRouter(
           path: MovieDetailPage.routeLocation.toSubRouteLocation(),
           name: MovieDetailPage.routeName,
           builder: (context, state) =>
-              MovieDetailPage(movie: state.extra as Movie),
+              MovieDetailPage(movieId: state.extra as int),
         ),
       ],
     ),
