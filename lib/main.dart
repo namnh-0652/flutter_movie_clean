@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_movie_clean/configs/env_configs.dart';
 import 'package:flutter_movie_clean/di/app_provider.dart';
-import 'package:flutter_movie_clean/route/app_router.dart';
+import 'package:flutter_movie_clean/presentation/route/app_router.dart';
 import 'package:flutter_movie_clean/shared/themes/text_themes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

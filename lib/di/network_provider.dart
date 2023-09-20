@@ -1,8 +1,8 @@
-import 'package:data/repository/source/remote/api/auth_api.dart';
-import 'package:data/repository/source/remote/api/helper/dio_builder.dart';
-import 'package:data/repository/source/remote/api/middleware/auth_interceptor.dart';
-import 'package:data/repository/source/remote/api/middleware/pretty_log_interceptor.dart';
-import 'package:data/repository/source/remote/api/un_auth_api.dart';
+import 'package:flutter_movie_clean/data/repository/source/remote/api/auth_api.dart';
+import 'package:flutter_movie_clean/data/repository/source/remote/api/helper/dio_builder.dart';
+import 'package:flutter_movie_clean/data/repository/source/remote/api/middleware/auth_interceptor.dart';
+import 'package:flutter_movie_clean/data/repository/source/remote/api/middleware/pretty_log_interceptor.dart';
+import 'package:flutter_movie_clean/data/repository/source/remote/api/un_auth_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_movie_clean/di/app_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
