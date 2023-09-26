@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_clean/app_viewmodel.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/presentation/pages/categories/categories_page.dart';
@@ -9,19 +10,20 @@ import 'package:flutter_movie_clean/presentation/pages/home/home_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/more/more_page.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key, required this.user});
-  final String user;
+class MainPage extends ConsumerStatefulWidget {
+  const MainPage({super.key});
 
   static const String routeLocation = "/";
   static const String routeName = "main";
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPageState extends ConsumerState<MainPage> {
+  late final AppViewModel _authViewModel;
   final List<Widget> _pages = [
     const HomePage(),
     const CategoriesPage(),
@@ -42,7 +44,8 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Welcome ${widget.user}")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Welcome ${_authViewModel.profile?.username ?? ""}")));
     });
   }
 

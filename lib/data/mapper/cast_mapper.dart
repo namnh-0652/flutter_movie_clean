@@ -17,6 +17,8 @@ class CastMapper extends BaseMapper<CastData, Cast> {
         gender: data.gender,
         knownForDepartment: data.knownForDepartment,
         originalName: data.originalName,
-        profilePath: data.profilePath == null ? null : "$baseImageUrl${data.profilePath}");
+        profilePath: data.profilePath == null
+            ? null
+            : "$baseImageUrl${data.profilePath}");
   }
 }

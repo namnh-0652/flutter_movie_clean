@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_clean/app_viewmodel.dart';
+import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/presentation/components/primary_textfield.dart';
 import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
@@ -10,22 +12,24 @@ import 'package:flutter_movie_clean/shared/utils/validate_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountCreatePasswordPage extends StatefulWidget {
-  const AccountCreatePasswordPage({this.imagePath, this.username, Key? key}) : super(key: key);
+class AccountCreatePasswordPage extends ConsumerStatefulWidget {
+  const AccountCreatePasswordPage({Key? key}) : super(key: key);
 
   static const String routeLocation = "/createPassword";
   static const String routeName = "create_password";
 
-  final String? imagePath;
-  final String? username;
   @override
-  State<AccountCreatePasswordPage> createState() => _AccountCreatePasswordPageState();
+  AccountCreatePasswordPageState createState() =>
+      AccountCreatePasswordPageState();
 }
 
-class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
+class AccountCreatePasswordPageState
+    extends ConsumerState<AccountCreatePasswordPage>
     with WidgetsBindingObserver {
   final TextEditingController _passwordTextController = TextEditingController();
+  late final AppViewModel _authViewModel;
   bool isKeyboardVisible = false;
 
   bool _isEnableBtn = false;
@@ -50,6 +54,7 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
   @override
   void initState() {
     _passwordTextController.addListener(_updateBtnState);
+    _authViewModel = ref.read(appViewModelProvider);
     super.initState();
   }
 
@@ -90,15 +95,21 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
   Widget _buildBtn() {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
+      margin: EdgeInsets.only(
+          bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
       child: SecondaryButton(
-        backgroundColor: _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
+        backgroundColor:
+            _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
         width: 1.sw,
         height: 50.h,
         title: context.l10n.looksStrong,
         onPressed: _isEnableBtn
-            ? () => context.pushNamed(AccountCreatePinPage.routeName,
-                extra: {"imagePath": widget.imagePath, "username": widget.username})
+            ? () {
+                _authViewModel.setProfile(
+                  password: _passwordTextController.text,
+                );
+                _gotoCreatePinPage();
+              }
             : null,
       ),
     );
@@ -138,7 +149,8 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
         children: [
           Center(
             child: AssetGenImage(
-              widget.imagePath ?? Assets.images.profile.profile1.path,
+              _authViewModel.profile?.imagePath ??
+                  Assets.images.profile.profile1.path,
             ).image(width: 120.w, height: 120.w, fit: BoxFit.cover),
           ),
           Align(
@@ -151,7 +163,8 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
                 color: AppColors.white,
                 highlightColor: AppColors.black.withOpacity(0.1),
                 shape: const CircleBorder(),
-                onPressed: () => context.go(AccountCreateAvatarPage.routeLocation),
+                onPressed: () =>
+                    context.go(AccountCreateAvatarPage.routeLocation),
                 child: Center(
                   child: Icon(
                     Icons.cameraswitch,
@@ -169,7 +182,7 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
 
   Widget _buildTextUsername() {
     return Text(
-      widget.username ?? "",
+      _authViewModel.profile?.username ?? "",
       style: GoogleFonts.inter(
         color: AppColors.white,
         fontSize: 18.sp,
@@ -189,12 +202,17 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
           fontSize: 18,
           fontWeight: FontWeight.w800,
         ),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         hintStyle: GoogleFonts.inter(
-            color: AppColors.white.withOpacity(0.20), fontSize: 18, fontWeight: FontWeight.w800),
+            color: AppColors.white.withOpacity(0.20),
+            fontSize: 18,
+            fontWeight: FontWeight.w800),
         hintText: context.l10n.password,
         suffix: GestureDetector(
-          child: _isObsecureText ? Text(context.l10n.show) : Text(context.l10n.hide),
+          child: _isObsecureText
+              ? Text(context.l10n.show)
+              : Text(context.l10n.hide),
           onTap: () {
             setState(() {
               _isObsecureText = !_isObsecureText;
@@ -206,5 +224,9 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
         backgroundColor: AppColors.white.withOpacity(0.20),
       ),
     );
+  }
+
+  _gotoCreatePinPage() {
+    context.pushNamed(AccountCreatePinPage.routeName);
   }
 }

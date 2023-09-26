@@ -86,7 +86,8 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
   }
 
   Widget _buildTopPage(BuildContext buildContext) {
-    final movie = ref.watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.movie));
+    final movie = ref.watch(movieDetailViewModelProvider(widget.movieId)
+        .select((value) => value.movie));
     return Consumer(
       builder: (context, ref, child) {
         return movie.maybeWhen(
@@ -97,10 +98,11 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
                     children: [
                       ShaderMask(
                         shaderCallback: (Rect bounds) => const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            stops: [0.0, 1.0],
-                            colors: [Colors.transparent, Colors.black]).createShader(bounds),
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: [0.0, 1.0],
+                                colors: [Colors.transparent, Colors.black])
+                            .createShader(bounds),
                         blendMode: BlendMode.darken,
                         child: Image.network(
                           movie.posterPath ?? "",
@@ -127,14 +129,18 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
                               movie.title ?? "",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: AppColors.white, fontSize: 20.sp, fontWeight: FontWeight.w800),
+                                  color: AppColors.white,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w800),
                             ),
                           )),
                       Positioned(
                           left: 0,
                           right: 0,
                           bottom: 12.h,
-                          child: InkWell(onTap: () {}, child: Assets.images.icPlayRed.svg()))
+                          child: InkWell(
+                              onTap: () {},
+                              child: Assets.images.icPlayRed.svg()))
                     ],
                   ),
                 ),
@@ -156,7 +162,10 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
           child: SecondaryButton(
             width: 150,
             title: buildContext.l10n.download,
-            textStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.sp, color: AppColors.white),
+            textStyle: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18.sp,
+                color: AppColors.white),
           ),
         ),
         Padding(
@@ -165,10 +174,12 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
             text: TextSpan(children: [
               TextSpan(
                   text: buildContext.l10n.plus,
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20.sp)),
+                  style:
+                      TextStyle(fontWeight: FontWeight.w400, fontSize: 20.sp)),
               TextSpan(
                   text: buildContext.l10n.addToWatchList,
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.sp))
+                  style:
+                      TextStyle(fontWeight: FontWeight.w400, fontSize: 15.sp))
             ]),
           ),
         )
@@ -177,10 +188,13 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
   }
 
   Widget _buildOverview() {
-    final movie =
-        ref.watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.movie)).value;
+    final movie = ref
+        .watch(movieDetailViewModelProvider(widget.movieId)
+            .select((value) => value.movie))
+        .value;
     return Padding(
-      padding: EdgeInsets.only(left: 12.w, top: 16.h, right: 12.w, bottom: 12.h),
+      padding:
+          EdgeInsets.only(left: 12.w, top: 16.h, right: 12.w, bottom: 12.h),
       child: Text(
         movie?.overview ?? "",
         style: TextStyle(
@@ -216,12 +230,17 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
   }
 
   Widget _buildTabContent() {
-    final movie =
-        ref.watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.movie)).value;
-    final casts =
-        ref.watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.casts)).value;
+    final movie = ref
+        .watch(movieDetailViewModelProvider(widget.movieId)
+            .select((value) => value.movie))
+        .value;
+    final casts = ref
+        .watch(movieDetailViewModelProvider(widget.movieId)
+            .select((value) => value.casts))
+        .value;
     final movies = ref
-        .watch(movieDetailViewModelProvider(widget.movieId).select((value) => value.similarMovies))
+        .watch(movieDetailViewModelProvider(widget.movieId)
+            .select((value) => value.similarMovies))
         .value;
     tabViews = [
       TrailerTab(backdropPath: movie?.backdropPath ?? ""),

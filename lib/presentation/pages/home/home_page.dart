@@ -23,7 +23,8 @@ class HomePage extends ConsumerStatefulWidget {
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClientMixin {
+class HomePageState extends ConsumerState<HomePage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -73,9 +74,12 @@ class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClien
       width: 70.h,
       height: 70.h,
       padding: EdgeInsets.only(right: 16.w),
-      image: Assets.images.spidermanPlaceholder.image(
-        width: 54.w,
-        height: 54.h,
+      image: Consumer(
+        builder: (BuildContext context, WidgetRef ref, Widget? child) =>
+            AssetGenImage(
+          ref.watch(appViewModelProvider).profile?.imagePath ??
+              Assets.images.profile.profile1.path,
+        ).image(width: 54.w, height: 54.h),
       ),
     );
   }
@@ -177,7 +181,8 @@ class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClien
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    context.push(MovieDetailPage.routeLocation, extra: movies[index].id);
+                    context.push(MovieDetailPage.routeLocation,
+                        extra: movies[index].id);
                   },
                   child: Image.network(
                     movies[index].posterPath ?? "",

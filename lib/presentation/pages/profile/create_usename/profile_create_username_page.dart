@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_clean/presentation/components/primary_textfield.dart';
-import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
+import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/app_viewmodel.dart';
+import 'package:flutter_movie_clean/presentation/components/primary_textfield.dart';
+import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_password/account_create_password_page.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ProfileCreateUserPage extends StatefulWidget {
-  const ProfileCreateUserPage({this.imagePath, Key? key}) : super(key: key);
+class ProfileCreateUserPage extends ConsumerStatefulWidget {
+  const ProfileCreateUserPage({Key? key}) : super(key: key);
 
   static const String routeLocation = "/createUsername";
   static const String routeName = "createUsername";
 
-  final String? imagePath;
   @override
-  State<ProfileCreateUserPage> createState() => _ProfileCreateUserPageState();
+  ProfileCreateUserPageState createState() => ProfileCreateUserPageState();
 }
 
-class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
+class ProfileCreateUserPageState extends ConsumerState<ProfileCreateUserPage> {
   final TextEditingController _usernameTextController = TextEditingController();
+  late final AppViewModel _authViewModel;
   bool isKeyboardVisible = false;
-
   bool _isEnableBtn = false;
 
   void _updateBtnState() {
@@ -40,6 +42,7 @@ class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
 
   @override
   void initState() {
+    _authViewModel = ref.read<AppViewModel>(appViewModelProvider);
     _usernameTextController.addListener(_updateBtnState);
     super.initState();
   }
@@ -77,20 +80,21 @@ class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
   Widget _buildBtn() {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
+      margin: EdgeInsets.only(
+          bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
       child: SecondaryButton(
-        backgroundColor: _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
+        backgroundColor:
+            _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
         width: 1.sw,
         height: 50.h,
         title: context.l10n.callMeThis,
         onPressed: _isEnableBtn
-            ? () => context.pushNamed(
-                  AccountCreatePasswordPage.routeName,
-                  extra: {
-                    "imagePath": widget.imagePath,
-                    "username": _usernameTextController.text,
-                  },
-                )
+            ? () {
+                ref
+                    .read<AppViewModel>(appViewModelProvider)
+                    .setProfile(username: _usernameTextController.text);
+                _gotoCreatePasswordPage();
+              }
             : null,
       ),
     );
@@ -115,7 +119,8 @@ class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
         children: [
           Center(
             child: AssetGenImage(
-              widget.imagePath ?? Assets.images.profile.profile1.path,
+              _authViewModel.profile?.imagePath ??
+                  Assets.images.profile.profile1.path,
             ).image(width: 120.w, height: 120.w, fit: BoxFit.cover),
           ),
           Align(
@@ -149,7 +154,8 @@ class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
       width: 250.w,
       height: 50.h,
       child: PrimaryTextField(
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         backgroundColor: AppColors.white.withOpacity(0.2),
         textStyle: GoogleFonts.inter(
           color: AppColors.white,
@@ -159,9 +165,15 @@ class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
         hintText: context.l10n.username,
         controller: _usernameTextController,
         hintStyle: GoogleFonts.inter(
-            color: AppColors.white.withOpacity(0.20), fontSize: 18, fontWeight: FontWeight.w800),
+            color: AppColors.white.withOpacity(0.20),
+            fontSize: 18,
+            fontWeight: FontWeight.w800),
         border: InputBorder.none,
       ),
     );
+  }
+
+  _gotoCreatePasswordPage() {
+    context.pushNamed(AccountCreatePasswordPage.routeName);
   }
 }

@@ -4,7 +4,8 @@ import 'package:flutter_movie_clean/domain/model/tv_series.dart';
 import 'package:flutter_movie_clean/domain/repository/movie_repository.dart';
 import 'package:flutter_movie_clean/domain/usecase/base/base_use_case.dart';
 
-class GetSortedSeriesUseCase extends BaseUseCase<GetSortedSeriesInput, PagingData<TvSeries>> {
+class GetSortedSeriesUseCase
+    extends BaseUseCase<GetSortedSeriesInput, PagingData<TvSeries>> {
   GetSortedSeriesUseCase(this.movieRepository);
 
   final MovieRepository movieRepository;

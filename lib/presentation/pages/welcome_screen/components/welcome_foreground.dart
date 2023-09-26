@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_clean/presentation/components/primary_button.dart';
-import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
+import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
-import 'package:flutter_movie_clean/presentation/pages/login/login.dart';
+import 'package:flutter_movie_clean/presentation/components/primary_button.dart';
+import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
+import 'package:flutter_movie_clean/presentation/pages/login/login_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/signup/signup.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class WelcomeForeground extends StatelessWidget {
+class WelcomeForeground extends ConsumerWidget {
   const WelcomeForeground({
     this.isLastItem = false,
     this.description = "",
@@ -27,7 +29,7 @@ class WelcomeForeground extends StatelessWidget {
   final PageController pageController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -39,7 +41,8 @@ class WelcomeForeground extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.fromLTRB(7.74, 12.09, 6.22, 10.81),
                 width: 188.23.w,
-                child: SvgPicture.asset(Assets.images.icLogo.path, fit: BoxFit.contain),
+                child: SvgPicture.asset(Assets.images.icLogo.path,
+                    fit: BoxFit.contain),
               ),
             ),
           ),
@@ -72,6 +75,9 @@ class WelcomeForeground extends StatelessWidget {
                       child: PrimaryButton(
                           title: context.l10n.signup,
                           onPressed: () {
+                            ref
+                                .read(welcomeViewModelProvider)
+                                .setIsFirstRunAppUseCase();
                             context.go(SignupPage.routeLocation);
                           }),
                     ),
@@ -81,6 +87,10 @@ class WelcomeForeground extends StatelessWidget {
                       child: SecondaryButton(
                         title: context.l10n.login,
                         onPressed: () {
+                          ref
+                              .read(welcomeViewModelProvider)
+                              .setIsFirstRunAppUseCase();
+
                           context.go(LoginPage.routeLocation);
                         },
                       ),
@@ -102,7 +112,8 @@ class WelcomeForeground extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(left: 30.w, right: 30.w, bottom: 40.h),
+                        margin: EdgeInsets.only(
+                            left: 30.w, right: 30.w, bottom: 40.h),
                         alignment: Alignment.bottomCenter,
                         child: PrimaryButton(
                             width: 1.sw,

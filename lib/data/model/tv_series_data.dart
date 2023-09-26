@@ -2,6 +2,7 @@ import 'package:flutter_movie_clean/data/model/base_data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'tv_series_data.freezed.dart';
+part 'tv_series_data.g.dart';
 
 @freezed
 class TvSeriesData extends BaseData with _$TvSeriesData {
@@ -21,5 +22,6 @@ class TvSeriesData extends BaseData with _$TvSeriesData {
     @JsonKey(name: "popularity") double? popularity,
   }) = _TvSeriesData;
 
-  factory TvSeriesData.fromJson(Map<String, Object?> json) => _$TvSeriesDataFromJson(json);
+  factory TvSeriesData.fromJson(Map<String, Object?> json) =>
+      _$TvSeriesDataFromJson(json);
 }

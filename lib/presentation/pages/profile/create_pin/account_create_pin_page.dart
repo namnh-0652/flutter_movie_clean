@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_clean/presentation/components/pin_form.dart';
-import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
+import 'package:flutter_movie_clean/di/view_model_provider.dart';
+import 'package:flutter_movie_clean/domain/model/profile_model.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/app_viewmodel.dart';
+import 'package:flutter_movie_clean/presentation/components/pin_form.dart';
+import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_success/account_create_success_screen.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountCreatePinPage extends StatefulWidget {
-  const AccountCreatePinPage({this.imagePath, this.username, Key? key}) : super(key: key);
+class AccountCreatePinPage extends ConsumerStatefulWidget {
+  const AccountCreatePinPage({Key? key}) : super(key: key);
 
   static const String routeLocation = "/createPin";
   static const String routeName = "createPin";
 
-  final String? imagePath;
-  final String? username;
   @override
-  State<AccountCreatePinPage> createState() => _AccountCreatePinPageState();
+  AccountCreatePinPageState createState() => AccountCreatePinPageState();
 }
 
-class _AccountCreatePinPageState extends State<AccountCreatePinPage> with WidgetsBindingObserver {
+class AccountCreatePinPageState extends ConsumerState<AccountCreatePinPage>
+    with WidgetsBindingObserver {
+  late final AppViewModel _appViewModel;
   bool isKeyboardVisible = false;
 
   bool _isEnableBtn = false;
@@ -31,6 +35,12 @@ class _AccountCreatePinPageState extends State<AccountCreatePinPage> with Widget
     setState(() {
       _isEnableBtn = value.length == pin.length;
     });
+  }
+
+  @override
+  void initState() {
+    _appViewModel = ref.read(appViewModelProvider);
+    super.initState();
   }
 
   @override
@@ -47,7 +57,7 @@ class _AccountCreatePinPageState extends State<AccountCreatePinPage> with Widget
                   _buildLogo(),
                   _buildTextDescription(),
                   SizedBox(height: 48.h),
-                  _builImageProfile(),
+                  _buildImageProfile(),
                   SizedBox(height: 24.h),
                   _buildPinForm(),
                   _buildTextInfo(),
@@ -65,17 +75,20 @@ class _AccountCreatePinPageState extends State<AccountCreatePinPage> with Widget
   Container _buildBtn(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
+      margin: EdgeInsets.only(
+          bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
       child: SecondaryButton(
-        backgroundColor: _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
+        backgroundColor:
+            _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
         width: 1.sw,
         height: 50.h,
         title: context.l10n.iamAllSafeNow,
         onPressed: _isEnableBtn
-            ? () => context.go(AccountCreateSuccessPage.routeLocation, extra: {
-                  "imagePath": widget.imagePath,
-                  "username": widget.username,
-                })
+            ? () {
+                _appViewModel.setProfile(pin: pin.join());
+                _createProfile(_appViewModel.profile);
+                context.go(AccountCreateSuccessPage.routeLocation);
+              }
             : null,
       ),
     );
@@ -88,7 +101,9 @@ class _AccountCreatePinPageState extends State<AccountCreatePinPage> with Widget
       child: Text(
         context.l10n.createPinDescription,
         style: GoogleFonts.inter(
-            fontSize: 16.sp, fontWeight: FontWeight.w800, color: AppColors.white.withOpacity(0.5)),
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w800,
+            color: AppColors.white.withOpacity(0.5)),
         textAlign: TextAlign.center,
       ),
     );
@@ -104,9 +119,9 @@ class _AccountCreatePinPageState extends State<AccountCreatePinPage> with Widget
     );
   }
 
-  Widget _builImageProfile() {
+  Widget _buildImageProfile() {
     return AssetGenImage(
-      widget.imagePath ?? Assets.images.profile.profile1.path,
+      _appViewModel.profile?.imagePath ?? Assets.images.profile.profile1.path,
     ).image(
       width: 120,
       height: 120,
@@ -134,5 +149,15 @@ class _AccountCreatePinPageState extends State<AccountCreatePinPage> with Widget
       padding: EdgeInsets.fromLTRB(7.74.w, 12.09.h, 6.22.w, 10.81.h),
       child: Assets.images.icLogo.svg(),
     );
+  }
+
+  _createProfile(Profile? profile) {
+    if (profile != null &&
+        profile.imagePath != null &&
+        profile.username != null &&
+        profile.password != null &&
+        profile.pin != null) {
+      _appViewModel.updateAccount(profiles: [profile]);
+    }
   }
 }

@@ -6,23 +6,28 @@ import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_avatar/account_create_avatar_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/signup/signup.dart';
+import 'package:flutter_movie_clean/di/view_model_provider.dart';
+import 'package:flutter_movie_clean/gen/assets.gen.dart';
+import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
+import 'package:flutter_movie_clean/shared/utils/function_utils.dart';
 import 'package:flutter_movie_clean/shared/utils/validate_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final class LoginPage extends StatefulWidget {
+final class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   static const String routeLocation = "/login";
   static const String routeName = "login";
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends ConsumerState<LoginPage> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -37,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _observers();
     return Scaffold(
       body: Container(
         color: Colors.black,
@@ -86,14 +92,21 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildEmailInput(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30.w),
-      child: PrimaryTextField(
-        controller: _emailTextController,
-        hintText: context.l10n.emailHint,
-        backgroundColor: Colors.white,
-        border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
-        validator: (value) => ValidateHelper.validateEmail(context, value),
-      ),
+      child: Consumer(builder: (context, ref, child) {
+        final accountState =
+            ref.watch(loginViewModelProvider.select((vm) => vm.accountState));
+        return PrimaryTextField(
+          controller: _emailTextController,
+          hintText: context.l10n.emailHint,
+          backgroundColor: Colors.white,
+          border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
+          options:
+              InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
+          validator: (value) =>
+              ValidateHelper.validateEmail(context, value) ??
+              accountState?.error?.castOrNull<FormatException>()?.message,
+        );
+      }),
     );
   }
 
@@ -106,10 +119,13 @@ class _LoginPageState extends State<LoginPage> {
         obscureText: _isObsecureText,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         validator: (value) => ValidateHelper.validatePassword(context, value),
         suffix: GestureDetector(
-          child: _isObsecureText ? Text(context.l10n.show) : Text(context.l10n.hide),
+          child: _isObsecureText
+              ? Text(context.l10n.show)
+              : Text(context.l10n.hide),
           onTap: () {
             // TODO: Do not rebuild the whole screen
             setState(() {
@@ -124,17 +140,35 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: SecondaryButton(
-        title: context.l10n.login,
-        textStyle: TextStyle(fontSize: 18.sp, color: AppColors.white),
-        onPressed: () => {
-          if (_formKey.currentState!.validate())
-            {
-              context
-                  .go(AccountCreateAvatarPage.routeLocation, extra: {"user": _emailTextController.text})
-            }
-        },
-      ),
+      child: Consumer(builder: (context, ref, child) {
+        final accountState = ref.watch(loginViewModelProvider
+            .select((viewModel) => viewModel.accountState));
+        return Column(
+          children: [
+            Visibility(
+                visible: accountState?.isLoading == true,
+                child: Column(
+                  children: [
+                    const CircularProgressIndicator(),
+                    SizedBox(height: 16.h),
+                  ],
+                )),
+            SecondaryButton(
+              title: context.l10n.login,
+              textStyle: TextStyle(fontSize: 18.sp, color: AppColors.white),
+              onPressed: () => {
+                if (_formKey.currentState!.validate())
+                  {
+                    ref.read(loginViewModelProvider).login(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text,
+                        )
+                  }
+              },
+            ),
+          ],
+        );
+      }),
     );
   }
 
@@ -261,9 +295,26 @@ class _LoginPageState extends State<LoginPage> {
                 fontWeight: FontWeight.w800,
                 color: AppColors.crimsonApprox,
               ),
-              recognizer: TapGestureRecognizer()..onTap = () => context.go(SignupPage.routeLocation)),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => context.go(SignupPage.routeLocation)),
         ],
       ),
     );
+  }
+
+  _observers() {
+    ref.listen(appViewModelProvider.select((vm) => vm.account), (_, account) {
+      if (account != null) {
+        context.go(AccountCreateAvatarPage.routeLocation);
+      }
+    });
+
+    ref.listen(loginViewModelProvider.select((vm) => vm.accountState),
+        (_, accountState) {
+      final account = accountState?.value;
+      if (account != null) {
+        ref.read(appViewModelProvider).setAccount(account);
+      }
+    });
   }
 }

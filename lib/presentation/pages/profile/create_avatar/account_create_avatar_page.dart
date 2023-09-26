@@ -1,29 +1,34 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
+import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/app_viewmodel.dart';
+import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_usename/profile_create_username_page.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountCreateAvatarPage extends StatefulWidget {
+class AccountCreateAvatarPage extends ConsumerStatefulWidget {
   const AccountCreateAvatarPage({Key? key}) : super(key: key);
 
   static const String routeLocation = "/createAvatar";
   static const String routeName = "createAvatar";
 
   @override
-  State<AccountCreateAvatarPage> createState() => _AccountCreateAvatarPageState();
+  AccountCreateAvatarPageState createState() => AccountCreateAvatarPageState();
 }
 
-class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
+class AccountCreateAvatarPageState
+    extends ConsumerState<AccountCreateAvatarPage> {
   late final List<AssetGenImage> _imageProfiles;
   late final List<GlobalKey> _profileItemGlobalKeys;
   late final GlobalKey gridViewKey = GlobalKey();
 
+  AppViewModel get _authViewModel => ref.watch(appViewModelProvider);
   int _itemSelectedIndex = -1;
   Offset? offsetSelected;
 
@@ -59,14 +64,17 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
 
   Widget _buildBtnAcceptAvatarSelected() {
     return SecondaryButton(
-      backgroundColor: _itemSelectedIndex != -1 ? AppColors.crimsonApprox : AppColors.black,
+      backgroundColor:
+          _itemSelectedIndex != -1 ? AppColors.crimsonApprox : AppColors.black,
       width: 1.sw - 60.w,
       height: 50.h,
       title: context.l10n.looksGood,
       onPressed: _itemSelectedIndex != -1
           ? () {
-              context.pushNamed(ProfileCreateUserPage.routeName,
-                  extra: {"imagePath": _imageProfiles[_itemSelectedIndex].path});
+              _authViewModel.setProfile(
+                imagePath: _imageProfiles[_itemSelectedIndex].path,
+              );
+              _gotoCreateUsernamePage();
             }
           : null,
     );
@@ -75,7 +83,10 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
   Widget _buildTextDescription() {
     return Text(
       context.l10n.chooseYourAvatar,
-      style: GoogleFonts.inter(color: AppColors.white, fontSize: 23.78.sp, fontWeight: FontWeight.w900),
+      style: GoogleFonts.inter(
+          color: AppColors.white,
+          fontSize: 23.78.sp,
+          fontWeight: FontWeight.w900),
     );
   }
 
@@ -134,7 +145,8 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
             key: _profileItemGlobalKeys[index],
             width: 100.w,
             height: 100.w,
-            child: element.image(width: 100.w, height: 100.w, fit: BoxFit.cover),
+            child:
+                element.image(width: 100.w, height: 100.w, fit: BoxFit.cover),
           ),
         ),
       );
@@ -142,12 +154,19 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
   }
 
   Offset? getOffsetItemSelected(int indexSelected, GlobalKey parentKey) {
-    RenderBox? child =
-        _profileItemGlobalKeys[indexSelected].currentContext?.findRenderObject() as RenderBox?;
+    RenderBox? child = _profileItemGlobalKeys[indexSelected]
+        .currentContext
+        ?.findRenderObject() as RenderBox?;
     Offset? childOffset = child?.localToGlobal(Offset.zero);
-    RenderBox? parent = parentKey.currentContext?.findRenderObject() as RenderBox?;
-    Offset? childRelativeToParent = parent?.globalToLocal(childOffset ?? Offset.zero);
+    RenderBox? parent =
+        parentKey.currentContext?.findRenderObject() as RenderBox?;
+    Offset? childRelativeToParent =
+        parent?.globalToLocal(childOffset ?? Offset.zero);
 
     return childRelativeToParent;
+  }
+
+  _gotoCreateUsernamePage() {
+    context.pushNamed(ProfileCreateUserPage.routeName);
   }
 }

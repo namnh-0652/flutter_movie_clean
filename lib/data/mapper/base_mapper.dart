@@ -8,6 +8,12 @@ abstract class BaseMapper<T extends BaseData, R extends BaseModel> {
     return list.map((e) => map(e)).toList();
   }
 
+  R? mapOrNull(T? data) {
+    if (data == null) return null;
+
+    return map(data);
+  }
+
   List<R>? mapNullableList(List<T>? list) {
     return list?.map((e) => map(e)).toList();
   }

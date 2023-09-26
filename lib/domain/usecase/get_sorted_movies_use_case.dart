@@ -4,7 +4,8 @@ import 'package:flutter_movie_clean/domain/model/paging_data.dart';
 import 'package:flutter_movie_clean/domain/repository/movie_repository.dart';
 import 'package:flutter_movie_clean/domain/usecase/base/base_use_case.dart';
 
-class GetSortedMoviesUseCase extends BaseUseCase<GetSortedMoviesInput, PagingData<Movie>> {
+class GetSortedMoviesUseCase
+    extends BaseUseCase<GetSortedMoviesInput, PagingData<Movie>> {
   GetSortedMoviesUseCase(this.movieRepository);
 
   final MovieRepository movieRepository;

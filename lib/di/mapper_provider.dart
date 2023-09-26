@@ -1,3 +1,4 @@
+import 'package:flutter_movie_clean/data/mapper/account_mapper.dart';
 import 'package:flutter_movie_clean/data/mapper/cast_mapper.dart';
 import 'package:flutter_movie_clean/data/mapper/casts_maper.dart';
 import 'package:flutter_movie_clean/data/mapper/movie_mapper.dart';
@@ -22,4 +23,12 @@ final castsMapperProvider = Provider<CastsMapper>((ref) {
 final castMapperProvider = Provider<CastMapper>((ref) {
   final envConfigs = ref.watch(envConfigsProvider);
   return CastMapper(envConfigs.baseImageUrl);
+});
+
+final profileMapperProvider = Provider<ProfileMapper>((ref) {
+  return ProfileMapper();
+});
+
+final accountMapperProvider = Provider<AccountMapper>((ref) {
+  return AccountMapper(profileMapper: ref.watch(profileMapperProvider));
 });
