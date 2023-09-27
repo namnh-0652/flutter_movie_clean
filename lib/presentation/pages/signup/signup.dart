@@ -90,7 +90,8 @@ class _SignupPageState extends State<SignupPage> {
         hintText: context.l10n.emailHint,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
         validator: (value) => ValidateHelper.validateEmail(context, value),
       ),
     );
@@ -105,10 +106,13 @@ class _SignupPageState extends State<SignupPage> {
         obscureText: _isObsecureText,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         validator: (value) => ValidateHelper.validatePassword(context, value),
         suffix: GestureDetector(
-          child: _isObsecureText ? Text(context.l10n.show) : Text(context.l10n.hide),
+          child: _isObsecureText
+              ? Text(context.l10n.show)
+              : Text(context.l10n.hide),
           onTap: () {
             // TODO: Do not rebuild the whole screen
             setState(() {
@@ -259,7 +263,8 @@ class _SignupPageState extends State<SignupPage> {
                 fontWeight: FontWeight.w800,
                 color: AppColors.crimsonApprox,
               ),
-              recognizer: TapGestureRecognizer()..onTap = () => context.go(LoginPage.routeLocation)),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => context.go(LoginPage.routeLocation)),
         ],
       ),
     );

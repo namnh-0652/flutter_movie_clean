@@ -17,7 +17,8 @@ class CategoriesViewModel extends BaseViewModel {
   final GetSortedSeriesUseCase _getSortedSeriesUseCase;
 
   AsyncValue<PagingData<Poster>> get postersPagingData => _postersPagingData;
-  AsyncValue<PagingData<Poster>> _postersPagingData = const AsyncValue.loading();
+  AsyncValue<PagingData<Poster>> _postersPagingData =
+      const AsyncValue.loading();
 
   CategoryType selectedCategoryType = CategoryType.movies;
   SortType selectedSortType = SortType.newest;

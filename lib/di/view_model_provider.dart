@@ -12,7 +12,8 @@ final homeViewModelProvider = ChangeNotifierProvider.autoDispose<HomeViewModel>(
   ),
 );
 
-final categoriesViewModelProvider = ChangeNotifierProvider.autoDispose<CategoriesViewModel>(
+final categoriesViewModelProvider =
+    ChangeNotifierProvider.autoDispose<CategoriesViewModel>(
   (ref) => CategoriesViewModel(
     ref.watch(getSortedMoviesUseCaseProvider),
     ref.watch(getSortedSeriesUseCaseProvider),

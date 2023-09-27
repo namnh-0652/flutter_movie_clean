@@ -23,7 +23,8 @@ class HomePage extends ConsumerStatefulWidget {
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClientMixin {
+class HomePageState extends ConsumerState<HomePage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -177,7 +178,8 @@ class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClien
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    context.push(MovieDetailPage.routeLocation, extra: movies[index].id);
+                    context.push(MovieDetailPage.routeLocation,
+                        extra: movies[index].id);
                   },
                   child: Image.network(
                     movies[index].posterPath ?? "",

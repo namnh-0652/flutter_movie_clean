@@ -16,5 +16,6 @@ class CastData extends BaseData with _$CastData {
     @JsonKey(name: "character") String? character,
   }) = _CastData;
 
-  factory CastData.fromJson(Map<String, Object?> json) => _$CastDataFromJson(json);
+  factory CastData.fromJson(Map<String, Object?> json) =>
+      _$CastDataFromJson(json);
 }

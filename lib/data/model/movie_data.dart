@@ -20,5 +20,6 @@ class MovieData extends BaseData with _$MovieData {
     @JsonKey(name: "adult") bool? isAdult,
   }) = _MovieData;
 
-  factory MovieData.fromJson(Map<String, Object?> json) => _$MovieDataFromJson(json);
+  factory MovieData.fromJson(Map<String, Object?> json) =>
+      _$MovieDataFromJson(json);
 }

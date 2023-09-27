@@ -6,6 +6,8 @@ class DioBuilder {
   static const defaultConnectTimeout = Duration(seconds: 30);
   static const defaultReceiveTimeout = Duration(seconds: 30);
   static const defaultSendTimeout = Duration(seconds: 30);
+  static const unAuthDioInstanceName = "unAuthDio";
+  static const authDioInstanceName = "authDio";
 
   static Dio createDio({
     required BaseOptions options,

@@ -9,8 +9,8 @@ import 'package:flutter_movie_clean/shared/constant/constant.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MovieDetailViewModel extends BaseViewModel {
-  MovieDetailViewModel(
-      this._getMovieDetailUseCase, this._getCastsUseCase, this._getSimilarMoviesUseCase);
+  MovieDetailViewModel(this._getMovieDetailUseCase, this._getCastsUseCase,
+      this._getSimilarMoviesUseCase);
 
   final GetMovieDetailUseCase _getMovieDetailUseCase;
   final GetCastsUseCase _getCastsUseCase;
@@ -51,7 +51,8 @@ class MovieDetailViewModel extends BaseViewModel {
           ..onSuccess((similarMovies) {
             _similarMovies = AsyncValue.data(similarMovies
                 .where((element) => (element.posterPath != null &&
-                    (element.releaseDate != null || element.releaseDate?.isNotEmpty == true)))
+                    (element.releaseDate != null ||
+                        element.releaseDate?.isNotEmpty == true)))
                 .toList());
           })
           ..onError((error) {
@@ -73,7 +74,8 @@ class MovieDetailViewModel extends BaseViewModel {
               cast: casts.cast
                   ?.where((element) => (element.knownForDepartment == acting &&
                       element.profilePath != null &&
-                      (element.character != null || element.character?.isNotEmpty == true)))
+                      (element.character != null ||
+                          element.character?.isNotEmpty == true)))
                   .toList());
           _casts = AsyncValue.data(castsData);
         })

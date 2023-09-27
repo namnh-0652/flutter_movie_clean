@@ -21,5 +21,6 @@ class TvSeriesData extends BaseData with _$TvSeriesData {
     @JsonKey(name: "popularity") double? popularity,
   }) = _TvSeriesData;
 
-  factory TvSeriesData.fromJson(Map<String, Object?> json) => _$TvSeriesDataFromJson(json);
+  factory TvSeriesData.fromJson(Map<String, Object?> json) =>
+      _$TvSeriesDataFromJson(json);
 }
