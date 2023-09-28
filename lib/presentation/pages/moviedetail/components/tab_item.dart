@@ -37,7 +37,10 @@ class TabItem extends StatelessWidget {
             title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700, color: AppColors.white),
+            style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.white),
           ),
           SizedBox(
             height: 8.h,
@@ -46,7 +49,10 @@ class TabItem extends StatelessWidget {
             content,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w400, color: AppColors.white70),
+            style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w400,
+                color: AppColors.white70),
           )
         ],
       ),

@@ -4,25 +4,28 @@ import 'package:flutter_movie_clean/presentation/components/primary_textfield.da
 import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
-import 'package:flutter_movie_clean/presentation/pages/profile/create_avatar/account_create_avatar_page.dart';
+import 'package:flutter_movie_clean/presentation/pages/login/login_view_model.dart';
+import 'package:flutter_movie_clean/presentation/pages/main/main_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/signup/signup.dart';
+import 'package:flutter_movie_clean/presentation/route/app_router.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_movie_clean/shared/utils/validate_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final class LoginPage extends StatefulWidget {
+final class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   static const String routeLocation = "/login";
   static const String routeName = "login";
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -91,7 +94,8 @@ class _LoginPageState extends State<LoginPage> {
         hintText: context.l10n.emailHint,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
         validator: (value) => ValidateHelper.validateEmail(context, value),
       ),
     );
@@ -106,10 +110,13 @@ class _LoginPageState extends State<LoginPage> {
         obscureText: _isObsecureText,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         validator: (value) => ValidateHelper.validatePassword(context, value),
         suffix: GestureDetector(
-          child: _isObsecureText ? Text(context.l10n.show) : Text(context.l10n.hide),
+          child: _isObsecureText
+              ? Text(context.l10n.show)
+              : Text(context.l10n.hide),
           onTap: () {
             // TODO: Do not rebuild the whole screen
             setState(() {
@@ -122,19 +129,42 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLoginButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: SecondaryButton(
-        title: context.l10n.login,
-        textStyle: TextStyle(fontSize: 18.sp, color: AppColors.white),
-        onPressed: () => {
-          if (_formKey.currentState!.validate())
-            {
-              context
-                  .go(AccountCreateAvatarPage.routeLocation, extra: {"user": _emailTextController.text})
-            }
-        },
-      ),
+    final state = ref.watch(loginViewModelProvider);
+    ref.listen(
+      loginViewModelProvider,
+      (previous, next) {
+        if (next is AsyncData) {
+          final user = next.valueOrNull;
+          if (user != null) {
+            context.go(MainPage.routeLocation);
+            ref.read(appStateProvider.notifier).loggedIn(user);
+          }
+        }
+      },
+      onError: (error, stackTrace) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.toString())));
+      },
+    );
+    return state.maybeMap(
+      loading: (loading) => const CircularProgressIndicator(),
+      orElse: () {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: SecondaryButton(
+            title: context.l10n.login,
+            textStyle: TextStyle(fontSize: 18.sp, color: AppColors.white),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                ref.read(loginViewModelProvider.notifier).signIn(
+                      _emailTextController.text,
+                      _passwordTextController.text,
+                    );
+              }
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -255,13 +285,15 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           TextSpan(
-              text: " ${context.l10n.signup}",
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w800,
-                color: AppColors.crimsonApprox,
-              ),
-              recognizer: TapGestureRecognizer()..onTap = () => context.go(SignupPage.routeLocation)),
+            text: " ${context.l10n.signup}",
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w800,
+              color: AppColors.crimsonApprox,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => context.go(SignupPage.routeLocation),
+          ),
         ],
       ),
     );

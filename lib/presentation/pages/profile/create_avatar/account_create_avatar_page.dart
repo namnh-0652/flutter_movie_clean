@@ -16,7 +16,8 @@ class AccountCreateAvatarPage extends StatefulWidget {
   static const String routeName = "createAvatar";
 
   @override
-  State<AccountCreateAvatarPage> createState() => _AccountCreateAvatarPageState();
+  State<AccountCreateAvatarPage> createState() =>
+      _AccountCreateAvatarPageState();
 }
 
 class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
@@ -59,14 +60,16 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
 
   Widget _buildBtnAcceptAvatarSelected() {
     return SecondaryButton(
-      backgroundColor: _itemSelectedIndex != -1 ? AppColors.crimsonApprox : AppColors.black,
+      backgroundColor:
+          _itemSelectedIndex != -1 ? AppColors.crimsonApprox : AppColors.black,
       width: 1.sw - 60.w,
       height: 50.h,
       title: context.l10n.looksGood,
       onPressed: _itemSelectedIndex != -1
           ? () {
-              context.pushNamed(ProfileCreateUserPage.routeName,
-                  extra: {"imagePath": _imageProfiles[_itemSelectedIndex].path});
+              context.pushNamed(ProfileCreateUserPage.routeName, extra: {
+                "imagePath": _imageProfiles[_itemSelectedIndex].path
+              });
             }
           : null,
     );
@@ -75,7 +78,10 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
   Widget _buildTextDescription() {
     return Text(
       context.l10n.chooseYourAvatar,
-      style: GoogleFonts.inter(color: AppColors.white, fontSize: 23.78.sp, fontWeight: FontWeight.w900),
+      style: GoogleFonts.inter(
+          color: AppColors.white,
+          fontSize: 23.78.sp,
+          fontWeight: FontWeight.w900),
     );
   }
 
@@ -134,7 +140,8 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
             key: _profileItemGlobalKeys[index],
             width: 100.w,
             height: 100.w,
-            child: element.image(width: 100.w, height: 100.w, fit: BoxFit.cover),
+            child:
+                element.image(width: 100.w, height: 100.w, fit: BoxFit.cover),
           ),
         ),
       );
@@ -142,11 +149,14 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
   }
 
   Offset? getOffsetItemSelected(int indexSelected, GlobalKey parentKey) {
-    RenderBox? child =
-        _profileItemGlobalKeys[indexSelected].currentContext?.findRenderObject() as RenderBox?;
+    RenderBox? child = _profileItemGlobalKeys[indexSelected]
+        .currentContext
+        ?.findRenderObject() as RenderBox?;
     Offset? childOffset = child?.localToGlobal(Offset.zero);
-    RenderBox? parent = parentKey.currentContext?.findRenderObject() as RenderBox?;
-    Offset? childRelativeToParent = parent?.globalToLocal(childOffset ?? Offset.zero);
+    RenderBox? parent =
+        parentKey.currentContext?.findRenderObject() as RenderBox?;
+    Offset? childRelativeToParent =
+        parent?.globalToLocal(childOffset ?? Offset.zero);
 
     return childRelativeToParent;
   }

@@ -10,6 +10,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class ProviderLogger extends ProviderObserver {
+  @override
+  void didUpdateProvider(
+    ProviderBase<Object?> provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
+    print("===============================\n");
+    print(
+      '''{
+        "provider": "${provider.name ?? provider.runtimeType}",
+        "newValue": "$newValue"
+      }''',
+    );
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await loadEnvConfigs();
@@ -18,6 +36,7 @@ void main() async {
     const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
   );
   runApp(ProviderScope(
+    observers: [ProviderLogger()],
     overrides: [sharedPrefsProvider.overrideWithValue(sharedPrefs)],
     child: const MyApp(),
   ));
@@ -28,11 +47,12 @@ Future<void> loadEnvConfigs() async {
   await EnvConfigs.load(environment.toLowerCase());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appRouter = ref.watch(appRouterProvider);
     return ScreenUtilInit(
       designSize: const Size(360, 800),
       minTextAdapt: true,

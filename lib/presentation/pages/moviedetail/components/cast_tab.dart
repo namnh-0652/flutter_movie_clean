@@ -12,7 +12,8 @@ class CastTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 32.h, left: 16.h, right: 16.h, bottom: 20.h),
+      padding:
+          EdgeInsets.only(top: 32.h, left: 16.h, right: 16.h, bottom: 20.h),
       child: ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

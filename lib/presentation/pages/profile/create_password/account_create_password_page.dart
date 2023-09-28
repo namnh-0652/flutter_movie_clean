@@ -12,7 +12,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AccountCreatePasswordPage extends StatefulWidget {
-  const AccountCreatePasswordPage({this.imagePath, this.username, Key? key}) : super(key: key);
+  const AccountCreatePasswordPage({this.imagePath, this.username, Key? key})
+      : super(key: key);
 
   static const String routeLocation = "/createPassword";
   static const String routeName = "create_password";
@@ -20,7 +21,8 @@ class AccountCreatePasswordPage extends StatefulWidget {
   final String? imagePath;
   final String? username;
   @override
-  State<AccountCreatePasswordPage> createState() => _AccountCreatePasswordPageState();
+  State<AccountCreatePasswordPage> createState() =>
+      _AccountCreatePasswordPageState();
 }
 
 class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
@@ -90,15 +92,19 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
   Widget _buildBtn() {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
+      margin: EdgeInsets.only(
+          bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
       child: SecondaryButton(
-        backgroundColor: _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
+        backgroundColor:
+            _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
         width: 1.sw,
         height: 50.h,
         title: context.l10n.looksStrong,
         onPressed: _isEnableBtn
-            ? () => context.pushNamed(AccountCreatePinPage.routeName,
-                extra: {"imagePath": widget.imagePath, "username": widget.username})
+            ? () => context.pushNamed(AccountCreatePinPage.routeName, extra: {
+                  "imagePath": widget.imagePath,
+                  "username": widget.username
+                })
             : null,
       ),
     );
@@ -151,7 +157,8 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
                 color: AppColors.white,
                 highlightColor: AppColors.black.withOpacity(0.1),
                 shape: const CircleBorder(),
-                onPressed: () => context.go(AccountCreateAvatarPage.routeLocation),
+                onPressed: () =>
+                    context.go(AccountCreateAvatarPage.routeLocation),
                 child: Center(
                   child: Icon(
                     Icons.cameraswitch,
@@ -189,12 +196,17 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
           fontSize: 18,
           fontWeight: FontWeight.w800,
         ),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         hintStyle: GoogleFonts.inter(
-            color: AppColors.white.withOpacity(0.20), fontSize: 18, fontWeight: FontWeight.w800),
+            color: AppColors.white.withOpacity(0.20),
+            fontSize: 18,
+            fontWeight: FontWeight.w800),
         hintText: context.l10n.password,
         suffix: GestureDetector(
-          child: _isObsecureText ? Text(context.l10n.show) : Text(context.l10n.hide),
+          child: _isObsecureText
+              ? Text(context.l10n.show)
+              : Text(context.l10n.hide),
           onTap: () {
             setState(() {
               _isObsecureText = !_isObsecureText;

@@ -28,7 +28,7 @@ final authDioProvider = Provider<Dio>((ref) {
     options: BaseOptions(baseUrl: envConfigs.baseUrl),
     interceptors: [
       ref.watch(authInterceptorProvider),
-      ref.watch(logInterceptorProvider),
+      // ref.watch(logInterceptorProvider),
     ],
   );
 });

@@ -90,7 +90,8 @@ class _SignupPageState extends State<SignupPage> {
         hintText: context.l10n.emailHint,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
         validator: (value) => ValidateHelper.validateEmail(context, value),
       ),
     );
@@ -105,10 +106,13 @@ class _SignupPageState extends State<SignupPage> {
         obscureText: _isObsecureText,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         validator: (value) => ValidateHelper.validatePassword(context, value),
         suffix: GestureDetector(
-          child: _isObsecureText ? Text(context.l10n.show) : Text(context.l10n.hide),
+          child: _isObsecureText
+              ? Text(context.l10n.show)
+              : Text(context.l10n.hide),
           onTap: () {
             // TODO: Do not rebuild the whole screen
             setState(() {
@@ -126,11 +130,11 @@ class _SignupPageState extends State<SignupPage> {
       child: SecondaryButton(
         title: context.l10n.signup,
         textStyle: TextStyle(fontSize: 18.sp, color: AppColors.white),
-        onPressed: () => {
-          if (_formKey.currentState!.validate())
-            {
-              // TODO: signup
-            }
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            // TODO: signup
+            context.go(LoginPage.routeLocation);
+          }
         },
       ),
     );
@@ -253,13 +257,15 @@ class _SignupPageState extends State<SignupPage> {
             ),
           ),
           TextSpan(
-              text: " ${context.l10n.login}",
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w800,
-                color: AppColors.crimsonApprox,
-              ),
-              recognizer: TapGestureRecognizer()..onTap = () => context.go(LoginPage.routeLocation)),
+            text: " ${context.l10n.login}",
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w800,
+              color: AppColors.crimsonApprox,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => context.go(LoginPage.routeLocation),
+          ),
         ],
       ),
     );

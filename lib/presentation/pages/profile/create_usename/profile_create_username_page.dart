@@ -77,9 +77,11 @@ class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
   Widget _buildBtn() {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
+      margin: EdgeInsets.only(
+          bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
       child: SecondaryButton(
-        backgroundColor: _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
+        backgroundColor:
+            _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
         width: 1.sw,
         height: 50.h,
         title: context.l10n.callMeThis,
@@ -149,7 +151,8 @@ class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
       width: 250.w,
       height: 50.h,
       child: PrimaryTextField(
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         backgroundColor: AppColors.white.withOpacity(0.2),
         textStyle: GoogleFonts.inter(
           color: AppColors.white,
@@ -159,7 +162,9 @@ class _ProfileCreateUserPageState extends State<ProfileCreateUserPage> {
         hintText: context.l10n.username,
         controller: _usernameTextController,
         hintStyle: GoogleFonts.inter(
-            color: AppColors.white.withOpacity(0.20), fontSize: 18, fontWeight: FontWeight.w800),
+            color: AppColors.white.withOpacity(0.20),
+            fontSize: 18,
+            fontWeight: FontWeight.w800),
         border: InputBorder.none,
       ),
     );

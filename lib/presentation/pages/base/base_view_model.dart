@@ -16,30 +16,30 @@ abstract class BaseViewModel extends ChangeNotifier {
     Function(O data)? onSuccess,
     Function(Object error)? onError,
   }) async {
-    await useCase.call(
+    await useCase.invoke(
       input,
-      OutputObserver()
-        ..onSubscribe(() {
-          onSubscribe?.call();
+      OutputObserver(
+        onLoading: () {
           if (shouldShowLoading) {
             showLoading();
           }
           notifyListeners();
-        })
-        ..onSuccess((data) {
+        },
+        onSuccess: (data) {
           onSuccess?.call(data);
           if (shouldShowLoading) {
             hideLoading();
           }
           notifyListeners();
-        })
-        ..onError((error) {
-          onError?.call(error);
+        },
+        onError: (e) {
+          onError?.call(e);
           if (shouldShowLoading) {
             hideLoading();
           }
           notifyListeners();
-        }),
+        },
+      ),
     );
   }
 

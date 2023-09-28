@@ -2,6 +2,7 @@ import 'package:flutter_movie_clean/data/model/base_data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'movie_data.freezed.dart';
+part 'movie_data.g.dart';
 
 @freezed
 class MovieData extends BaseData with _$MovieData {
@@ -20,5 +21,6 @@ class MovieData extends BaseData with _$MovieData {
     @JsonKey(name: "adult") bool? isAdult,
   }) = _MovieData;
 
-  factory MovieData.fromJson(Map<String, Object?> json) => _$MovieDataFromJson(json);
+  factory MovieData.fromJson(Map<String, Object?> json) =>
+      _$MovieDataFromJson(json);
 }

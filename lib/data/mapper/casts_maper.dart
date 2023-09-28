@@ -10,6 +10,7 @@ class CastsMapper extends BaseMapper<CastsData, Casts> {
 
   @override
   Casts map(CastsData data) {
-    return Casts(id: data.id, cast: castMapper.mapList(data.casts ?? List.empty()));
+    return Casts(
+        id: data.id, cast: castMapper.mapList(data.casts ?? List.empty()));
   }
 }

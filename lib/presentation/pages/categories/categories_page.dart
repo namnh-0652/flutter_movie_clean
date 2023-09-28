@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_clean/di/view_model_provider.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/presentation/model/enums/category_type.dart';
 import 'package:flutter_movie_clean/presentation/model/enums/sort_type.dart';
 import 'package:flutter_movie_clean/presentation/model/poster.dart';
+import 'package:flutter_movie_clean/presentation/pages/categories/categories_view_model.dart';
 import 'package:flutter_movie_clean/presentation/pages/categories/components/filter_chip_group.dart';
 import 'package:flutter_movie_clean/presentation/pages/categories/components/segmented_control.dart';
+import 'package:flutter_movie_clean/presentation/pages/moviedetail/movie_detail_page.dart';
 import 'package:flutter_movie_clean/shared/constant/constant.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -18,7 +20,8 @@ class CategoriesPage extends ConsumerStatefulWidget {
   CategoriesPageState createState() => CategoriesPageState();
 }
 
-class CategoriesPageState extends ConsumerState<CategoriesPage> with AutomaticKeepAliveClientMixin {
+class CategoriesPageState extends ConsumerState<CategoriesPage>
+    with AutomaticKeepAliveClientMixin {
   final _pagingController = PagingController<int, Poster>(
     firstPageKey: initialPage,
   );
@@ -44,7 +47,7 @@ class CategoriesPageState extends ConsumerState<CategoriesPage> with AutomaticKe
 
   void _observePosters() {
     ref.listen(
-      categoriesViewModelProvider.select((value) => value.postersPagingData),
+      categoriesViewModelProvider.select((value) => value),
       (previous, next) {
         final pagingData = next.asData?.value;
         if (pagingData == null) return;
@@ -59,16 +62,18 @@ class CategoriesPageState extends ConsumerState<CategoriesPage> with AutomaticKe
     _observePosters();
     return Scaffold(
       backgroundColor: AppColors.black,
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          SizedBox(height: 42.h),
-          _buildTopSegmentedControl(),
-          SizedBox(height: 20.h),
-          _buildFilterChipGroups(),
-          SizedBox(height: 24.h),
-          _buildGridMovies(),
-        ],
+      body: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            SizedBox(height: 10.h),
+            _buildTopSegmentedControl(),
+            SizedBox(height: 20.h),
+            _buildFilterChipGroups(),
+            SizedBox(height: 24.h),
+            _buildGridMovies(),
+          ],
+        ),
       ),
     );
   }
@@ -112,14 +117,24 @@ class CategoriesPageState extends ConsumerState<CategoriesPage> with AutomaticKe
         ),
         builderDelegate: PagedChildBuilderDelegate<Poster>(
           itemBuilder: (context, item, index) {
-            return Image.network(
-              item.posterUrl ?? '',
-              width: 102.w,
-              height: 160.h,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(color: AppColors.mineShaft);
+            return GestureDetector(
+              onTap: () {
+                if (ref
+                        .read(categoriesViewModelProvider.notifier)
+                        .selectedCategoryType ==
+                    CategoryType.movies) {
+                  context.push(MovieDetailPage.routeLocation, extra: item.id);
+                }
               },
+              child: Image.network(
+                item.posterUrl ?? '',
+                width: 102.w,
+                height: 160.h,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(color: AppColors.mineShaft);
+                },
+              ),
             );
           },
         ),

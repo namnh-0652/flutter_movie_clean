@@ -8,6 +8,7 @@ environment:
   sdk: ">=3.0.6 <4.0.0"
 
 dependencies:
+  carousel_slider: ^4.2.1
   collection: ^1.17.1
   cupertino_icons: ^1.0.5
   dio: ^5.3.2

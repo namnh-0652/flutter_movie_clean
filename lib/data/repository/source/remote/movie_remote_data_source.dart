@@ -46,7 +46,8 @@ class MovieRemoteDataSource {
   }
 
   Future<MovieData> getMovieDetail(int movieId, String language) async {
-    return await authApi.execute((api) => api.getMovieDetail(movieId, language));
+    return await authApi
+        .execute((api) => api.getMovieDetail(movieId, language));
   }
 
   Future<CastsData> getCasts(int movieId, String language) async {
