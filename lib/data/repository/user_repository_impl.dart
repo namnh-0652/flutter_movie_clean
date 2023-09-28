@@ -29,8 +29,20 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<User?> signUp(String email, String password) async {
-    final userData = await _userRemoteDataSource.signIn(email, password);
+  Future<User?> signUp({
+    required String email,
+    required String password,
+    required String avatar,
+    required String nickname,
+    required String pin,
+  }) async {
+    final userData = await _userRemoteDataSource.signUp(
+      email: email,
+      password: password,
+      avatar: avatar,
+      nickname: nickname,
+      pin: pin,
+    );
     await _userLocalDataSource.saveUser(userData);
     return _userMapper.map(userData);
   }

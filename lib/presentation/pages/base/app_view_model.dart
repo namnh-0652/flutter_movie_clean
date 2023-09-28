@@ -37,7 +37,7 @@ class AppViewModel extends StateNotifier<AppStartupState> {
     state = const AppStartupState.onboarded();
   }
 
-  Future<void> loggedIn(User user) async {
+  Future<void> loggedIn(User? user) async {
     currentUser = user;
     state = AppStartupState.profileLoaded(currentUser);
   }

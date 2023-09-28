@@ -5,27 +5,27 @@ import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_avatar/account_create_avatar_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_pin/account_create_pin_page.dart';
+import 'package:flutter_movie_clean/presentation/pages/signup/signup_view_model.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_movie_clean/shared/utils/validate_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountCreatePasswordPage extends StatefulWidget {
-  const AccountCreatePasswordPage({this.imagePath, this.username, Key? key})
-      : super(key: key);
+class AccountCreatePasswordPage extends ConsumerStatefulWidget {
+  const AccountCreatePasswordPage({Key? key}) : super(key: key);
 
   static const String routeLocation = "/createPassword";
   static const String routeName = "create_password";
 
-  final String? imagePath;
-  final String? username;
   @override
-  State<AccountCreatePasswordPage> createState() =>
+  ConsumerState<AccountCreatePasswordPage> createState() =>
       _AccountCreatePasswordPageState();
 }
 
-class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
+class _AccountCreatePasswordPageState
+    extends ConsumerState<AccountCreatePasswordPage>
     with WidgetsBindingObserver {
   final TextEditingController _passwordTextController = TextEditingController();
   bool isKeyboardVisible = false;
@@ -36,9 +36,7 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
   void _updateBtnState() {
     setState(() {
       _isEnableBtn = ValidateHelper.validatePassword(
-            context,
-            _passwordTextController.text,
-          ) ==
+              context, _passwordTextController.text) ==
           null;
     });
   }
@@ -60,31 +58,33 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
     isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return Scaffold(
       backgroundColor: AppColors.black,
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 32.h),
-                  Assets.images.icLogo.svg(),
-                  SizedBox(height: 21.h),
-                  _buildTextDescription(),
-                  SizedBox(height: 20.h),
-                  _buildAvatar(),
-                  SizedBox(height: 12.h),
-                  _buildTextUsername(),
-                  SizedBox(height: 27.h),
-                  _buildTextFieldPassword(),
-                  SizedBox(height: 8.h),
-                  _buildTextPasswordRuleDescription(),
-                  SizedBox(height: 20.h)
-                ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10.h),
+                    Assets.images.icLogo.svg(),
+                    SizedBox(height: 20.h),
+                    _buildTextDescription(),
+                    SizedBox(height: 20.h),
+                    _buildAvatar(),
+                    SizedBox(height: 12.h),
+                    _buildTextUsername(),
+                    SizedBox(height: 27.h),
+                    _buildTextFieldPassword(),
+                    SizedBox(height: 8.h),
+                    _buildTextPasswordRuleDescription(),
+                    SizedBox(height: 20.h)
+                  ],
+                ),
               ),
             ),
-          ),
-          _buildBtn(),
-        ],
+            _buildBtn(),
+          ],
+        ),
       ),
     );
   }
@@ -92,8 +92,7 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
   Widget _buildBtn() {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(
-          bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
+      margin: EdgeInsets.only(bottom: 20.h, left: 30.w, right: 30.w),
       child: SecondaryButton(
         backgroundColor:
             _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
@@ -101,10 +100,7 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
         height: 50.h,
         title: context.l10n.looksStrong,
         onPressed: _isEnableBtn
-            ? () => context.pushNamed(AccountCreatePinPage.routeName, extra: {
-                  "imagePath": widget.imagePath,
-                  "username": widget.username
-                })
+            ? () => context.pushNamed(AccountCreatePinPage.routeName)
             : null,
       ),
     );
@@ -144,7 +140,8 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
         children: [
           Center(
             child: AssetGenImage(
-              widget.imagePath ?? Assets.images.profile.profile1.path,
+              ref.read(signUpViewModelProvider.notifier).signupUser?.avatar ??
+                  Assets.images.profile.profile1.path,
             ).image(width: 120.w, height: 120.w, fit: BoxFit.cover),
           ),
           Align(
@@ -176,7 +173,7 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
 
   Widget _buildTextUsername() {
     return Text(
-      widget.username ?? "",
+      ref.read(signUpViewModelProvider.notifier).signupUser?.nickname ?? "",
       style: GoogleFonts.inter(
         color: AppColors.white,
         fontSize: 18.sp,
@@ -186,37 +183,41 @@ class _AccountCreatePasswordPageState extends State<AccountCreatePasswordPage>
   }
 
   Widget _buildTextFieldPassword() {
-    return SizedBox(
-      width: 250.w,
-      height: 50.h,
-      child: PrimaryTextField(
-        obscureText: _isObsecureText,
-        textStyle: GoogleFonts.inter(
-          color: AppColors.white,
-          fontSize: 18,
-          fontWeight: FontWeight.w800,
-        ),
-        options:
-            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
-        hintStyle: GoogleFonts.inter(
-            color: AppColors.white.withOpacity(0.20),
-            fontSize: 18,
-            fontWeight: FontWeight.w800),
-        hintText: context.l10n.password,
-        suffix: GestureDetector(
+    return PrimaryTextField(
+      obscureText: _isObsecureText,
+      textStyle: GoogleFonts.inter(
+        color: AppColors.white,
+        fontSize: 18,
+        fontWeight: FontWeight.w800,
+      ),
+      options: InputOptions(
+        width: 240.w,
+        maxLines: 1,
+        textInputAction: TextInputAction.done,
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+      ),
+      hintStyle: GoogleFonts.inter(
+        color: AppColors.white.withOpacity(0.20),
+        fontSize: 18,
+        fontWeight: FontWeight.w800,
+      ),
+      hintText: context.l10n.password,
+      suffix: GestureDetector(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 5),
           child: _isObsecureText
               ? Text(context.l10n.show)
               : Text(context.l10n.hide),
-          onTap: () {
-            setState(() {
-              _isObsecureText = !_isObsecureText;
-            });
-          },
         ),
-        controller: _passwordTextController,
-        border: InputBorder.none,
-        backgroundColor: AppColors.white.withOpacity(0.20),
+        onTap: () {
+          setState(() {
+            _isObsecureText = !_isObsecureText;
+          });
+        },
       ),
+      controller: _passwordTextController,
+      border: InputBorder.none,
+      backgroundColor: AppColors.white.withOpacity(0.20),
     );
   }
 }

@@ -12,6 +12,7 @@ import 'package:flutter_movie_clean/di/repository_provider.dart';
 import 'package:flutter_movie_clean/domain/usecase/has_completed_boading_use_case.dart';
 import 'package:flutter_movie_clean/domain/usecase/signin_use_case.dart';
 import 'package:flutter_movie_clean/domain/usecase/signout_use_case.dart';
+import 'package:flutter_movie_clean/domain/usecase/signup_use_case.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final getLatestMoviesUseCaseProvider = Provider<GetLatestMoviesUseCase>(
@@ -60,6 +61,10 @@ final completeBoadingUseCaseProvider = Provider<CompleteBoadingUseCase>(
 
 final signInUseCaseProvider = Provider<SignInUseCase>(
   (ref) => SignInUseCase(ref.watch(userRepositoryProvider)),
+);
+
+final signUpUseCaseProvider = Provider<SignupUseCase>(
+  (ref) => SignupUseCase(ref.watch(userRepositoryProvider)),
 );
 
 final signOutUseCaseProvider = Provider<SignOutUseCase>(

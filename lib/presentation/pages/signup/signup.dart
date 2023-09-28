@@ -5,23 +5,26 @@ import 'package:flutter_movie_clean/presentation/components/secondary_button.dar
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/presentation/pages/login/login.dart';
+import 'package:flutter_movie_clean/presentation/pages/profile/create_avatar/account_create_avatar_page.dart';
+import 'package:flutter_movie_clean/presentation/pages/signup/signup_view_model.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_movie_clean/shared/utils/validate_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final class SignupPage extends StatefulWidget {
+final class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
   static const String routeLocation = "/signup";
   static const String routeName = "signup";
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -132,8 +135,11 @@ class _SignupPageState extends State<SignupPage> {
         textStyle: TextStyle(fontSize: 18.sp, color: AppColors.white),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            // TODO: signup
-            context.go(LoginPage.routeLocation);
+            ref.read(signUpViewModelProvider.notifier).updateUser(
+                  email: _emailTextController.text,
+                  password: _passwordTextController.text,
+                );
+            context.go(AccountCreateAvatarPage.routeLocation);
           }
         },
       ),

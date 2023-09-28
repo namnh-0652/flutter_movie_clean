@@ -4,7 +4,6 @@ import 'package:flutter_movie_clean/presentation/pages/profile/create_password/a
 import 'package:flutter_movie_clean/presentation/pages/profile/create_pin/account_create_pin_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_success/account_create_success_screen.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_usename/profile_create_username_page.dart';
-import 'package:flutter_movie_clean/shared/utils/function.dart';
 import 'package:go_router/go_router.dart';
 
 final accountGraph = [
@@ -21,40 +20,27 @@ final accountGraph = [
   GoRoute(
     path: ProfileCreateUserPage.routeLocation,
     name: ProfileCreateUserPage.routeName,
-    builder: (context, state) => ProfileCreateUserPage(
-        imagePath: castOrNull<Map<String, String?>>(state.extra)?["imagePath"]),
+    builder: (context, state) => const ProfileCreateUserPage(),
   ),
   GoRoute(
     path: AccountCreatePasswordPage.routeLocation,
     name: AccountCreatePasswordPage.routeName,
     builder: (context, state) {
-      final args = castOrNull<Map<String, String?>>(state.extra);
-      return AccountCreatePasswordPage(
-        imagePath: args?["imagePath"],
-        username: args?["username"],
-      );
+      return const AccountCreatePasswordPage();
     },
   ),
   GoRoute(
     path: AccountCreatePinPage.routeLocation,
     name: AccountCreatePinPage.routeName,
     builder: (context, state) {
-      final args = castOrNull<Map<String, String?>>(state.extra);
-      return AccountCreatePinPage(
-        imagePath: args?["imagePath"],
-        username: args?["username"],
-      );
+      return const AccountCreatePinPage();
     },
   ),
   GoRoute(
     path: AccountCreateSuccessPage.routeLocation,
     name: AccountCreateSuccessPage.routeName,
     builder: (context, state) {
-      final args = castOrNull<Map<String, String?>>(state.extra);
-      return AccountCreateSuccessPage(
-        imagePath: args?["imagePath"],
-        username: args?["username"],
-      );
+      return const AccountCreateSuccessPage();
     },
   ),
 ];

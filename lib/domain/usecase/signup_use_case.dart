@@ -10,12 +10,27 @@ class SignupUseCase extends BaseUseCase<SignupUseCaseInput, User?> {
 
   @override
   Future<User?> buildUseCase(SignupUseCaseInput input) {
-    return userRepository.signUp(input.email, input.password);
+    return userRepository.signUp(
+      email: input.email,
+      password: input.password,
+      avatar: input.avatar,
+      nickname: input.nickname,
+      pin: input.pin,
+    );
   }
 }
 
 class SignupUseCaseInput extends BaseInput {
-  const SignupUseCaseInput({required this.email, required this.password});
+  const SignupUseCaseInput({
+    required this.email,
+    required this.password,
+    required this.avatar,
+    required this.nickname,
+    required this.pin,
+  });
   final String email;
   final String password;
+  final String avatar;
+  final String nickname;
+  final String pin;
 }

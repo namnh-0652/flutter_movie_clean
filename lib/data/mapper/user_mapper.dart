@@ -7,6 +7,11 @@ final class UserMapper extends BaseMapper<UserData, User> {
 
   @override
   User map(UserData data) {
-    return User(data.email, data.password);
+    return User(
+      email: data.email,
+      password: data.password,
+      nickname: data.nickname,
+      pin: data.pin,
+    );
   }
 }

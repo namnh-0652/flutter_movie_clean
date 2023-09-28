@@ -3,30 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/presentation/pages/signup/signup_view_model.dart';
 import 'package:flutter_movie_clean/presentation/pages/profile/create_usename/profile_create_username_page.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountCreateAvatarPage extends StatefulWidget {
+class AccountCreateAvatarPage extends ConsumerStatefulWidget {
   const AccountCreateAvatarPage({Key? key}) : super(key: key);
 
   static const String routeLocation = "/createAvatar";
   static const String routeName = "createAvatar";
 
   @override
-  State<AccountCreateAvatarPage> createState() =>
+  ConsumerState<AccountCreateAvatarPage> createState() =>
       _AccountCreateAvatarPageState();
 }
 
-class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
+class _AccountCreateAvatarPageState
+    extends ConsumerState<AccountCreateAvatarPage> {
   late final List<AssetGenImage> _imageProfiles;
   late final List<GlobalKey> _profileItemGlobalKeys;
   late final GlobalKey gridViewKey = GlobalKey();
 
   int _itemSelectedIndex = -1;
   Offset? offsetSelected;
+  bool get lookGood => _itemSelectedIndex != -1 && offsetSelected != null;
 
   @override
   void initState() {
@@ -39,20 +43,22 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.black,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            SizedBox(height: 32.h),
-            Assets.images.icLogo.svg(),
-            SizedBox(height: 11.h),
-            _buildTextDescription(),
-            SizedBox(height: 20.h),
-            _buildContentApp(),
-            SizedBox(height: 28.h),
-            _buildBtnAcceptAvatarSelected(),
-            SizedBox(height: 80.h),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox(height: 10.h),
+              Assets.images.icLogo.svg(),
+              SizedBox(height: 10.h),
+              _buildTextDescription(),
+              SizedBox(height: 10.h),
+              _buildContentApp(),
+              SizedBox(height: 10.h),
+              _buildBtnAcceptAvatarSelected(),
+              SizedBox(height: 20.h),
+            ],
+          ),
         ),
       ),
     );
@@ -60,16 +66,16 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
 
   Widget _buildBtnAcceptAvatarSelected() {
     return SecondaryButton(
-      backgroundColor:
-          _itemSelectedIndex != -1 ? AppColors.crimsonApprox : AppColors.black,
+      backgroundColor: lookGood ? AppColors.crimsonApprox : AppColors.black,
       width: 1.sw - 60.w,
       height: 50.h,
       title: context.l10n.looksGood,
-      onPressed: _itemSelectedIndex != -1
+      onPressed: lookGood
           ? () {
-              context.pushNamed(ProfileCreateUserPage.routeName, extra: {
-                "imagePath": _imageProfiles[_itemSelectedIndex].path
-              });
+              ref
+                  .read(signUpViewModelProvider.notifier)
+                  .updateUser(avatar: _imageProfiles[_itemSelectedIndex].path);
+              context.pushNamed(ProfileCreateUserPage.routeName);
             }
           : null,
     );
@@ -103,9 +109,7 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
                         offset: Offset(5.w, 5.h),
                       )
                     ],
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(50),
-                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(50)),
                   ),
                   width: 100.w,
                   height: 100.w,
@@ -117,7 +121,7 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
           clipBehavior: Clip.none,
           crossAxisCount: 2,
           padding: const EdgeInsets.all(0),
-          childAspectRatio: 200 / 140,
+          childAspectRatio: 210 / 140,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: _buildListItem(gridViewKey),
@@ -131,8 +135,13 @@ class _AccountCreateAvatarPageState extends State<AccountCreateAvatarPage> {
       return GestureDetector(
         onTap: () {
           setState(() {
-            offsetSelected = getOffsetItemSelected(index, parentKey);
-            _itemSelectedIndex = index;
+            if (_itemSelectedIndex == index) {
+              offsetSelected = null;
+              _itemSelectedIndex = -1;
+            } else {
+              offsetSelected = getOffsetItemSelected(index, parentKey);
+              _itemSelectedIndex = index;
+            }
           });
         },
         child: Center(

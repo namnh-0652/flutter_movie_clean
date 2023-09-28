@@ -29,7 +29,6 @@ class _PinFormState extends State<PinForm> {
   SizedBox _buildPinInput(int index) {
     return SizedBox(
       width: 40.w,
-      height: 50.w,
       child: TextFormField(
         keyboardType: TextInputType.number,
         onChanged: (value) {
@@ -44,17 +43,20 @@ class _PinFormState extends State<PinForm> {
         },
         textAlign: TextAlign.center,
         style: GoogleFonts.inter(
-            color: AppColors.white,
-            fontSize: 18.38.sp,
-            fontWeight: FontWeight.w600),
+          color: AppColors.white,
+          fontSize: 18.38.sp,
+          fontWeight: FontWeight.w600,
+        ),
         maxLength: 1,
         decoration: InputDecoration(
           counterText: "",
           filled: true,
           fillColor: AppColors.white.withOpacity(0.2),
+          contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 15),
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.w),
-              borderSide: BorderSide.none),
+            borderRadius: BorderRadius.circular(15.w),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );

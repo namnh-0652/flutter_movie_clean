@@ -10,10 +10,21 @@ class UserRemoteDataSource {
 
   UserRemoteDataSource(this._unAuthApi, this._authApi);
 
-  Future<UserData> signUp(String email, String password) async {
+  Future<UserData> signUp({
+    required String email,
+    required String password,
+    required String avatar,
+    required String nickname,
+    required String pin,
+  }) async {
     final fakeUserData = UserData.fromJson(
-      Map<String, String>.of(
-          <String, String>{"email": email, "password": password}),
+      Map<String, String>.of(<String, String>{
+        "email": email,
+        "password": password,
+        "avatar": avatar,
+        "nickname": nickname,
+        "pin": pin,
+      }),
     );
     return fakeUserData;
   }
