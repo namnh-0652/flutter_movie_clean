@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_clean/presentation/components/app_loading.dart';
-import 'package:flutter_movie_clean/presentation/components/avatar_frame.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_movie_clean/di/view_model_provider.dart';
+import 'package:flutter_movie_clean/di2/service_locator.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/presentation/components/avatar_frame.dart';
+import 'package:flutter_movie_clean/presentation/pages/home/bloc/home_cubit.dart';
+import 'package:flutter_movie_clean/presentation/pages/home/bloc/home_state.dart';
 import 'package:flutter_movie_clean/presentation/pages/home/components/carousel_page_view.dart';
 import 'package:flutter_movie_clean/presentation/pages/home/components/skeleton_carousel_movies.dart';
 import 'package:flutter_movie_clean/presentation/pages/home/components/skeleton_trending_movies.dart';
@@ -13,28 +16,34 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomePage extends ConsumerStatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   static const String routeLocation = "/home";
   static const String routeName = "home";
 
   @override
-  HomePageState createState() => HomePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider<HomeCubit>(
+      create: (context) {
+        return locator.get<HomeCubit>()..getLatestMovies();
+      },
+      child: const HomeView(),
+    );
+  }
 }
 
-class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  void initState() {
-    super.initState();
-    final viewModel = ref.read(homeViewModelProvider);
-    viewModel.getLatestMovies();
-    viewModel.getLatestSeries();
-    viewModel.getTrendingMovies();
-  }
+  HomeViewState createState() => HomeViewState();
+}
+
+class HomeViewState extends State<HomeView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +59,12 @@ class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClien
                 _buildHeadingTitle(context.l10n.latestMovies),
                 _buildLatestMovies(),
                 _buildHeadingTitle(context.l10n.latestSeries),
-                _buildLatestSeries(),
+                // _buildLatestSeries(),
                 _buildHeadingTitle(context.l10n.trendingToday),
-                _buildTrendingToday(),
+                // _buildTrendingToday(),
                 const SizedBox(height: 24),
               ],
             ),
-            Consumer(builder: (context, ref, child) {
-              final isLoading = ref.watch(
-                homeViewModelProvider.select((value) => value.isLoading),
-              );
-              return AppLoading(isLoading: isLoading);
-            }),
           ],
         ),
       ),
@@ -111,12 +114,10 @@ class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClien
   }
 
   Widget _buildLatestMovies() {
-    return Consumer(builder: (context, ref, child) {
-      final latestMovies = ref.watch(
-        homeViewModelProvider.select((value) => value.latestMovies),
-      );
-      return latestMovies.maybeWhen(
-        data: (movies) {
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        final movies = state.trendingMovies;
+        if (movies != null) {
           return CarouselPageView.builder(
             height: 204.h,
             itemCount: movies.length,
@@ -127,10 +128,11 @@ class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClien
               );
             },
           );
-        },
-        orElse: () => const SkeletonCarouselMovies(),
-      );
-    });
+        } else {
+          return const SkeletonCarouselMovies();
+        }
+      },
+    );
   }
 
   Widget _buildLatestSeries() {
@@ -177,7 +179,8 @@ class HomePageState extends ConsumerState<HomePage> with AutomaticKeepAliveClien
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    context.push(MovieDetailPage.routeLocation, extra: movies[index].id);
+                    context.push(MovieDetailPage.routeLocation,
+                        extra: movies[index].id);
                   },
                   child: Image.network(
                     movies[index].posterPath ?? "",

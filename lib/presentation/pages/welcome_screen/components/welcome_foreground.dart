@@ -39,7 +39,8 @@ class WelcomeForeground extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.fromLTRB(7.74, 12.09, 6.22, 10.81),
                 width: 188.23.w,
-                child: SvgPicture.asset(Assets.images.icLogo.path, fit: BoxFit.contain),
+                child: SvgPicture.asset(Assets.images.icLogo.path,
+                    fit: BoxFit.contain),
               ),
             ),
           ),
@@ -102,7 +103,8 @@ class WelcomeForeground extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(left: 30.w, right: 30.w, bottom: 40.h),
+                        margin: EdgeInsets.only(
+                            left: 30.w, right: 30.w, bottom: 40.h),
                         alignment: Alignment.bottomCenter,
                         child: PrimaryButton(
                             width: 1.sw,

@@ -20,17 +20,21 @@ class MoreTab extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: similarMovies.length,
-        separatorBuilder: (context, index) => const Divider(color: AppColors.white50),
+        separatorBuilder: (context, index) =>
+            const Divider(color: AppColors.white50),
         itemBuilder: (context, index) {
           var currentItem = similarMovies[index];
           return GestureDetector(
             onTap: () {
-              context.push(MovieDetailPage.routeLocation, extra: currentItem.id);
+              context.push(MovieDetailPage.routeLocation,
+                  extra: currentItem.id);
             },
             child: TabItem(
                 image: currentItem.posterPath ?? "",
                 title: currentItem.title ?? "",
-                content: DateTimeUtils.formatReleaseDate(currentItem.releaseDate) ?? ""),
+                content:
+                    DateTimeUtils.formatReleaseDate(currentItem.releaseDate) ??
+                        ""),
           );
         },
       ),

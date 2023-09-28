@@ -1,16 +1,15 @@
 import 'base_model.dart';
 
 class Cast extends BaseModel {
-  Cast({
-    this.id,
-    this.adult,
-    this.gender,
-    this.knownForDepartment,
-    this.name,
-    this.originalName,
-    this.profilePath,
-    this.character
-  });
+  Cast(
+      {this.id,
+      this.adult,
+      this.gender,
+      this.knownForDepartment,
+      this.name,
+      this.originalName,
+      this.profilePath,
+      this.character});
 
   final int? id;
   final bool? adult;

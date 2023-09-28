@@ -18,7 +18,8 @@ class CategoriesPage extends ConsumerStatefulWidget {
   CategoriesPageState createState() => CategoriesPageState();
 }
 
-class CategoriesPageState extends ConsumerState<CategoriesPage> with AutomaticKeepAliveClientMixin {
+class CategoriesPageState extends ConsumerState<CategoriesPage>
+    with AutomaticKeepAliveClientMixin {
   final _pagingController = PagingController<int, Poster>(
     firstPageKey: initialPage,
   );

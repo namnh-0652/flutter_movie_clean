@@ -42,7 +42,8 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Welcome ${widget.user}")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Welcome ${widget.user}")));
     });
   }
 

@@ -10,7 +10,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AccountCreatePinPage extends StatefulWidget {
-  const AccountCreatePinPage({this.imagePath, this.username, Key? key}) : super(key: key);
+  const AccountCreatePinPage({this.imagePath, this.username, Key? key})
+      : super(key: key);
 
   static const String routeLocation = "/createPin";
   static const String routeName = "createPin";
@@ -21,7 +22,8 @@ class AccountCreatePinPage extends StatefulWidget {
   State<AccountCreatePinPage> createState() => _AccountCreatePinPageState();
 }
 
-class _AccountCreatePinPageState extends State<AccountCreatePinPage> with WidgetsBindingObserver {
+class _AccountCreatePinPageState extends State<AccountCreatePinPage>
+    with WidgetsBindingObserver {
   bool isKeyboardVisible = false;
 
   bool _isEnableBtn = false;
@@ -65,9 +67,11 @@ class _AccountCreatePinPageState extends State<AccountCreatePinPage> with Widget
   Container _buildBtn(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
+      margin: EdgeInsets.only(
+          bottom: isKeyboardVisible ? 20.h : 80.h, left: 30.w, right: 30.w),
       child: SecondaryButton(
-        backgroundColor: _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
+        backgroundColor:
+            _isEnableBtn ? AppColors.crimsonApprox : AppColors.black,
         width: 1.sw,
         height: 50.h,
         title: context.l10n.iamAllSafeNow,
@@ -88,7 +92,9 @@ class _AccountCreatePinPageState extends State<AccountCreatePinPage> with Widget
       child: Text(
         context.l10n.createPinDescription,
         style: GoogleFonts.inter(
-            fontSize: 16.sp, fontWeight: FontWeight.w800, color: AppColors.white.withOpacity(0.5)),
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w800,
+            color: AppColors.white.withOpacity(0.5)),
         textAlign: TextAlign.center,
       ),
     );

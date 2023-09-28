@@ -3,7 +3,8 @@ import 'package:flutter_movie_clean/domain/model/tv_series.dart';
 import 'package:flutter_movie_clean/domain/repository/movie_repository.dart';
 import 'package:flutter_movie_clean/domain/usecase/base/base_use_case.dart';
 
-class GetLatestSeriesUseCase extends BaseUseCase<GetLatestSeriesInput, List<TvSeries>> {
+class GetLatestSeriesUseCase
+    extends BaseUseCase<GetLatestSeriesInput, List<TvSeries>> {
   GetLatestSeriesUseCase(this.movieRepository);
 
   final MovieRepository movieRepository;

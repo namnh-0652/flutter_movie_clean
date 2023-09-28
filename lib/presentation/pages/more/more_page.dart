@@ -9,7 +9,8 @@ class MorePage extends StatefulWidget {
   State<StatefulWidget> createState() => _MorePageState();
 }
 
-class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin {
+class _MorePageState extends State<MorePage>
+    with AutomaticKeepAliveClientMixin {
   // TODO Update UI later
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,9 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin 
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text("MorePage"),
-          TextButton(onPressed: () => context.go(LoginPage.routeLocation), child: const Text("Logout"))
+          TextButton(
+              onPressed: () => context.go(LoginPage.routeLocation),
+              child: const Text("Logout"))
         ],
       ),
     );

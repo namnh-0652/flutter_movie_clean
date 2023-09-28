@@ -1,3 +1,4 @@
+import 'package:flutter_movie_clean/presentation/pages/home/home_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/login/login.dart';
 import 'package:flutter_movie_clean/presentation/pages/main/main_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/moviedetail/movie_detail_page.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_movie_clean/shared/utils/function.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: WelcomeScreen.routeLocation,
+  initialLocation: MainPage.routeLocation,
   routes: [
     GoRoute(
       path: WelcomeScreen.routeLocation,
@@ -30,12 +31,12 @@ final appRouter = GoRouter(
       path: MainPage.routeLocation,
       name: MainPage.routeName,
       redirect: (context, state) {
-        var data = castOrNull<Map<String, String?>>(state.extra);
-        var user = data?["username"];
-        if (user == null) {
-          return LoginPage.routeLocation;
-        }
-        return MainPage.routeLocation;
+        // var data = castOrNull<Map<String, String?>>(state.extra);
+        // var user = data?["username"];
+        // if (user == null) {
+        //   return LoginPage.routeLocation;
+        // }
+        // return MainPage.routeLocation;
       },
       builder: (context, state) {
         var data = castOrNull<Map<String, String?>>(state.extra);
@@ -45,7 +46,8 @@ final appRouter = GoRouter(
         GoRoute(
           path: MovieDetailPage.routeLocation.toSubRouteLocation(),
           name: MovieDetailPage.routeName,
-          builder: (context, state) => MovieDetailPage(movieId: state.extra as int),
+          builder: (context, state) =>
+              MovieDetailPage(movieId: state.extra as int),
         ),
       ],
     ),

@@ -21,8 +21,8 @@ final accountGraph = [
   GoRoute(
     path: ProfileCreateUserPage.routeLocation,
     name: ProfileCreateUserPage.routeName,
-    builder: (context, state) =>
-        ProfileCreateUserPage(imagePath: castOrNull<Map<String, String?>>(state.extra)?["imagePath"]),
+    builder: (context, state) => ProfileCreateUserPage(
+        imagePath: castOrNull<Map<String, String?>>(state.extra)?["imagePath"]),
   ),
   GoRoute(
     path: AccountCreatePasswordPage.routeLocation,
