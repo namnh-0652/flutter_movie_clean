@@ -1,23 +1,7 @@
-class OutputObserver<Output> {
-  Function()? _onSubscribe;
-  Function(Output)? _onSuccess;
-  Function(Object)? _onError;
-
-  void onSubscribe(Function() block) {
-    _onSubscribe = block;
-  }
-
-  void onSuccess(Function(Output) block) {
-    _onSuccess = block;
-  }
-
-  void onError(Function(Object)? block) {
-    _onError = block;
-  }
-
-  void callSubscribe() => _onSubscribe?.call();
-
-  void callSuccess(Output output) => _onSuccess?.call(output);
-
-  void callError(Object error) => _onError?.call(error);
+final class OutputObserver<Output> {
+  Function()? onLoading;
+  Function(Output data)? onSuccess;
+  Function(Object e)? onError;
+  Function()? onFinish;
+  OutputObserver({this.onLoading, this.onSuccess, this.onError, this.onFinish});
 }

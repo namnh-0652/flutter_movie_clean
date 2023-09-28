@@ -5,23 +5,26 @@ import 'package:flutter_movie_clean/presentation/components/secondary_button.dar
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/presentation/pages/login/login.dart';
+import 'package:flutter_movie_clean/presentation/pages/profile/create_avatar/account_create_avatar_page.dart';
+import 'package:flutter_movie_clean/presentation/pages/signup/signup_view_model.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_movie_clean/shared/utils/validate_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final class SignupPage extends StatefulWidget {
+final class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
   static const String routeLocation = "/signup";
   static const String routeName = "signup";
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -90,7 +93,8 @@ class _SignupPageState extends State<SignupPage> {
         hintText: context.l10n.emailHint,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.next),
         validator: (value) => ValidateHelper.validateEmail(context, value),
       ),
     );
@@ -105,10 +109,13 @@ class _SignupPageState extends State<SignupPage> {
         obscureText: _isObsecureText,
         backgroundColor: Colors.white,
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        options: InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
+        options:
+            InputOptions(maxLines: 1, textInputAction: TextInputAction.done),
         validator: (value) => ValidateHelper.validatePassword(context, value),
         suffix: GestureDetector(
-          child: _isObsecureText ? Text(context.l10n.show) : Text(context.l10n.hide),
+          child: _isObsecureText
+              ? Text(context.l10n.show)
+              : Text(context.l10n.hide),
           onTap: () {
             // TODO: Do not rebuild the whole screen
             setState(() {
@@ -126,11 +133,14 @@ class _SignupPageState extends State<SignupPage> {
       child: SecondaryButton(
         title: context.l10n.signup,
         textStyle: TextStyle(fontSize: 18.sp, color: AppColors.white),
-        onPressed: () => {
-          if (_formKey.currentState!.validate())
-            {
-              // TODO: signup
-            }
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            ref.read(signUpViewModelProvider.notifier).updateUser(
+                  email: _emailTextController.text,
+                  password: _passwordTextController.text,
+                );
+            context.go(AccountCreateAvatarPage.routeLocation);
+          }
         },
       ),
     );
@@ -253,13 +263,15 @@ class _SignupPageState extends State<SignupPage> {
             ),
           ),
           TextSpan(
-              text: " ${context.l10n.login}",
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w800,
-                color: AppColors.crimsonApprox,
-              ),
-              recognizer: TapGestureRecognizer()..onTap = () => context.go(LoginPage.routeLocation)),
+            text: " ${context.l10n.login}",
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w800,
+              color: AppColors.crimsonApprox,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => context.go(LoginPage.routeLocation),
+          ),
         ],
       ),
     );

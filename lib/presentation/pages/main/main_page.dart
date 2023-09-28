@@ -11,8 +11,7 @@ import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key, required this.user});
-  final String user;
+  const MainPage({super.key});
 
   static const String routeLocation = "/";
   static const String routeName = "main";
@@ -35,14 +34,6 @@ class _MainPageState extends State<MainPage> {
     controller.jumpToPage(index);
     setState(() {
       _selectedTab = index;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Welcome ${widget.user}")));
     });
   }
 

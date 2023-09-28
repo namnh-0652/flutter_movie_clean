@@ -1,6 +1,6 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_clean/presentation/components/skeleton.dart';
-import 'package:flutter_movie_clean/presentation/pages/home/components/carousel_page_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SkeletonCarouselMovies extends StatelessWidget {
@@ -9,17 +9,24 @@ class SkeletonCarouselMovies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeleton(
-      child: CarouselPageView.builder(
-        height: 204.h,
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return Container(
-            width: double.infinity,
-            height: 204.h,
-            color: Colors.white,
-          );
-        },
+        child: CarouselSlider.builder(
+      options: CarouselOptions(
+        aspectRatio: 16 / 9,
+        viewportFraction: 0.7,
+        enlargeCenterPage: true,
+        pageSnapping: true,
+        enableInfiniteScroll: false,
+        initialPage: 1,
+        enlargeFactor: 0.25,
       ),
-    );
+      itemCount: 3,
+      itemBuilder: (context, index, realIndex) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          height: 204.h,
+          color: Colors.white,
+        );
+      },
+    ));
   }
 }

@@ -3,7 +3,8 @@ import 'package:flutter_movie_clean/domain/model/movie.dart';
 import 'package:flutter_movie_clean/domain/repository/movie_repository.dart';
 import 'package:flutter_movie_clean/domain/usecase/base/base_use_case.dart';
 
-class GetSimilarMoviesUseCase extends BaseUseCase<GetSimilarMoviesInput, List<Movie>> {
+class GetSimilarMoviesUseCase
+    extends BaseUseCase<GetSimilarMoviesInput, List<Movie>> {
   GetSimilarMoviesUseCase(this.movieRepository);
 
   final MovieRepository movieRepository;

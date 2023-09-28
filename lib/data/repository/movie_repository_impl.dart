@@ -79,7 +79,8 @@ class MovieRepositoryImpl extends MovieRepository {
 
   @override
   Future<List<Movie>> getSimilarMovies(int movieId, String language) async {
-    final movies = await movieRemoteDataSource.getSimilarMovies(movieId, language);
+    final movies =
+        await movieRemoteDataSource.getSimilarMovies(movieId, language);
     return movieMapper.mapList(movies);
   }
 }

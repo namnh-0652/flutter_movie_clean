@@ -3,46 +3,67 @@ import 'package:flutter_movie_clean/presentation/components/primary_button.dart'
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/presentation/pages/main/main_page.dart';
+import 'package:flutter_movie_clean/presentation/pages/signup/signup_view_model.dart';
+import 'package:flutter_movie_clean/presentation/route/app_router.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountCreateSuccessPage extends StatelessWidget {
-  const AccountCreateSuccessPage({
-    this.imagePath,
-    this.username,
-    super.key,
-  });
+class AccountCreateSuccessPage extends ConsumerStatefulWidget {
+  const AccountCreateSuccessPage({Key? key}) : super(key: key);
 
   static const String routeLocation = "/createPinSuccess";
   static const String routeName = "createPinSuccess";
 
-  final String? imagePath;
-  final String? username;
+  @override
+  ConsumerState<AccountCreateSuccessPage> createState() =>
+      _AccountCreateSuccessPageState();
+}
 
+class _AccountCreateSuccessPageState
+    extends ConsumerState<AccountCreateSuccessPage> {
   @override
   Widget build(BuildContext context) {
+    ref.listen(
+      signUpViewModelProvider,
+      (previous, next) {
+        if (next is AsyncData && next.asData != null) {
+          print(next.value);
+          ref.read(appStateProvider.notifier).loggedIn(next.value);
+          context.go(MainPage.routeLocation);
+        }
+      },
+      onError: (error, stackTrace) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.toString())));
+      },
+    );
     return Scaffold(
       backgroundColor: AppColors.black,
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildLogo(),
-                  _buildTextDescription(context),
-                  SizedBox(height: 62.h),
-                  _buildProfileImage(),
-                  SizedBox(height: 40.h),
-                  _buildTextUsername()
-                ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10.h),
+                    Assets.images.icLogo.svg(),
+                    SizedBox(height: 20.h),
+                    _buildTextDescription(context),
+                    SizedBox(height: 62.h),
+                    _buildProfileImage(),
+                    SizedBox(height: 30.h),
+                    _buildTextUsername()
+                  ],
+                ),
               ),
             ),
-          ),
-          _buildBtn(context),
-        ],
+            _buildBtn(context),
+          ],
+        ),
       ),
     );
   }
@@ -50,19 +71,13 @@ class AccountCreateSuccessPage extends StatelessWidget {
   Container _buildBtn(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(bottom: 80.h, left: 30.w, right: 30.w),
+      margin: EdgeInsets.only(bottom: 20.h, left: 30.w, right: 30.w),
       child: PrimaryButton(
         width: 1.sw,
         height: 50.h,
         title: context.l10n.eatYourGreenVegitables,
         onPressed: () {
-          context.go(
-            MainPage.routeLocation,
-            extra: {
-              "imagePath": imagePath,
-              "username": username,
-            },
-          );
+          ref.read(signUpViewModelProvider.notifier).signUp();
         },
       ),
     );
@@ -70,7 +85,7 @@ class AccountCreateSuccessPage extends StatelessWidget {
 
   Text _buildTextUsername() {
     return Text(
-      username ?? "",
+      ref.read(signUpViewModelProvider.notifier).signupUser?.nickname ?? "",
       textAlign: TextAlign.center,
       style: GoogleFonts.inter(
         color: AppColors.white,
@@ -85,7 +100,8 @@ class AccountCreateSuccessPage extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         AssetGenImage(
-          imagePath ?? Assets.images.profile.profile1.path,
+          ref.read(signUpViewModelProvider.notifier).signupUser?.avatar ??
+              Assets.images.profile.profile1.path,
         ).image(
           width: 200.h,
           height: 200.h,
@@ -109,17 +125,6 @@ class AccountCreateSuccessPage extends StatelessWidget {
         fontSize: 23.78.sp,
         fontWeight: FontWeight.w900,
       ),
-    );
-  }
-
-  Container _buildLogo() {
-    return Container(
-      margin: EdgeInsets.only(top: 32.h, bottom: 29.11.h),
-      color: AppColors.crimsonApprox,
-      width: 188.23.h,
-      height: 85.19.h,
-      padding: EdgeInsets.fromLTRB(7.74.w, 12.09.h, 6.22.w, 10.81.h),
-      child: Assets.images.icLogo.svg(),
     );
   }
 }

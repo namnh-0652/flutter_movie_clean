@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_movie_clean/data/model/base_data.dart';
 
 part 'cast_data.freezed.dart';
+part 'cast_data.g.dart';
 
 @freezed
 class CastData extends BaseData with _$CastData {
@@ -16,5 +17,6 @@ class CastData extends BaseData with _$CastData {
     @JsonKey(name: "character") String? character,
   }) = _CastData;
 
-  factory CastData.fromJson(Map<String, Object?> json) => _$CastDataFromJson(json);
+  factory CastData.fromJson(Map<String, Object?> json) =>
+      _$CastDataFromJson(json);
 }

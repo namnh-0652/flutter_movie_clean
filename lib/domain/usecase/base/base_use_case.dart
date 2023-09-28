@@ -4,13 +4,15 @@ import 'package:flutter_movie_clean/domain/interactor/output/output_observer.dar
 abstract class BaseUseCase<Input extends BaseInput, Output> {
   Future<Output> buildUseCase(Input input);
 
-  Future call(Input input, OutputObserver<Output> block) async {
-    block.callSubscribe();
+  Future invoke(Input input, OutputObserver<Output> block) async {
+    block.onLoading?.call();
     try {
       final data = await buildUseCase(input);
-      block.callSuccess(data);
+      block.onSuccess?.call(data);
     } catch (e) {
-      block.callError(e);
+      block.onError?.call(e);
+    } finally {
+      block.onFinish?.call();
     }
   }
 }
