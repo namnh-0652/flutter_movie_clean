@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_movie_clean/presentation/components/primary_button.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/presentation/pages/base/app_view_model_v1.dart';
 import 'package:flutter_movie_clean/presentation/pages/main/main_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/signup/signup_view_model.dart';
-import 'package:flutter_movie_clean/presentation/route/app_router.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +31,7 @@ class _AccountCreateSuccessPageState
       (previous, next) {
         if (next is AsyncData && next.asData != null) {
           print(next.value);
-          ref.read(appStateProvider.notifier).loggedIn(next.value);
+          ref.read(appViewModel1Provider.notifier).loggedIn(next.value);
           context.go(MainPage.routeLocation);
         }
       },

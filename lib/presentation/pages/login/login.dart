@@ -4,10 +4,10 @@ import 'package:flutter_movie_clean/presentation/components/primary_textfield.da
 import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
+import 'package:flutter_movie_clean/presentation/pages/base/app_view_model_v1.dart';
 import 'package:flutter_movie_clean/presentation/pages/login/login_view_model.dart';
 import 'package:flutter_movie_clean/presentation/pages/main/main_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/signup/signup.dart';
-import 'package:flutter_movie_clean/presentation/route/app_router.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_movie_clean/shared/utils/validate_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -137,7 +137,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           final user = next.valueOrNull;
           if (user != null) {
             context.go(MainPage.routeLocation);
-            ref.read(appStateProvider.notifier).loggedIn(user);
+            ref.read(appViewModel1Provider.notifier).loggedIn(user);
           }
         }
       },

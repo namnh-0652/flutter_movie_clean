@@ -1,5 +1,4 @@
-import 'package:flutter_movie_clean/di/use_case_provider.dart';
-import 'package:flutter_movie_clean/presentation/pages/base/app_view_model.dart';
+import 'package:flutter_movie_clean/presentation/pages/base/app_view_model_v1.dart';
 import 'package:flutter_movie_clean/presentation/pages/login/login.dart';
 import 'package:flutter_movie_clean/presentation/pages/main/main_page.dart';
 import 'package:flutter_movie_clean/presentation/pages/moviedetail/movie_detail_page.dart';
@@ -9,16 +8,8 @@ import 'package:flutter_movie_clean/presentation/route/account_graph.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final appStateProvider = StateNotifierProvider((ref) {
-  return AppViewModel(
-    ref.watch(getLocalUserUseCaseProvider),
-    ref.watch(hasCompletedBoadingUseCaseProvider),
-    ref.watch(completeBoadingUseCaseProvider),
-  )..init();
-});
-
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final appState = ref.watch(appStateProvider.notifier);
+  final appState = ref.watch(appViewModel1Provider.notifier);
   return GoRouter(
     initialLocation: WelcomeScreen.routeLocation,
     redirect: (context, state) {

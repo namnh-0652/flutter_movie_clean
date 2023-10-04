@@ -28,6 +28,7 @@ dependencies:
   intl: ^0.18.0
   json_annotation: ^4.8.1
   retrofit: ^4.0.1
+  riverpod_annotation: ^2.1.6
   scrollable_positioned_list: ^0.3.8
   shared_preferences: ^2.2.0
   skeletonizer: ^0.7.0
@@ -42,6 +43,7 @@ dev_dependencies:
   freezed: ^2.4.1
   json_serializable: ^6.7.1
   retrofit_generator: ^7.0.8
+  riverpod_generator: ^2.3.2
 
 ### FlutterGen configs
 flutter_gen:

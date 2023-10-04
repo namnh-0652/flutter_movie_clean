@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_clean/domain/model/movie.dart';
 import 'package:flutter_movie_clean/gen/assets.gen.dart';
 import 'package:flutter_movie_clean/presentation/components/secondary_button.dart';
 import 'package:flutter_movie_clean/gen/colors.gen.dart';
 import 'package:flutter_movie_clean/presentation/pages/moviedetail/components/cast_tab.dart';
 import 'package:flutter_movie_clean/presentation/pages/moviedetail/components/more_tab.dart';
 import 'package:flutter_movie_clean/presentation/pages/moviedetail/components/trailer_tab.dart';
-import 'package:flutter_movie_clean/presentation/pages/moviedetail/movie_detail_view_model.dart';
+import 'package:flutter_movie_clean/presentation/pages/moviedetail/movie_detail_view_model1.dart';
 import 'package:flutter_movie_clean/shared/extensions/context_ext.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -36,23 +37,12 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initData();
-    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  void _initData() {
-    final viewModel =
-        ref.read(movieDetailViewModelProvider(widget.movieId).notifier);
-    viewModel.getMovieDetail(widget.movieId);
-    viewModel.getCasts(widget.movieId);
-    viewModel.getSimilarMovies(widget.movieId);
   }
 
   _handleTabSelection() {
@@ -69,35 +59,34 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
     return Scaffold(
       backgroundColor: AppColors.black,
       body: SafeArea(
-        child: ListView(
-          children: [
-            _buildTopPage(context),
-            SizedBox(
-              height: 20.h,
-              width: 1.sw,
-            ),
-            _buildFunctions(context),
-            _buildOverview(),
-            _buildTabsLabel(context),
-            _buildTabContent()
-          ],
-        ),
+        child: Stack(children: [
+          ListView(
+            children: [
+              _buildTopPage(context),
+              SizedBox(height: 20.h, width: 1.sw),
+              _buildFunctions(context),
+              _buildOverview(),
+              _buildTabsLabel(context),
+              _buildTabContent()
+            ],
+          ),
+          Consumer(builder: (context, ref, value) {
+            final isLoading = ref.watch(screenLoadingProvider(widget.movieId)
+                .select((value) => value.value));
+            print('build loading $isLoading');
+            return isLoading == true
+                ? const Center(child: CircularProgressIndicator())
+                : const SizedBox();
+          })
+        ]),
       ),
     );
   }
 
   Widget _buildTopPage(BuildContext buildContext) {
-    final movie = ref.watch(movieDetailViewModelProvider(widget.movieId)
-        .select((value) => value.movie));
-    return Consumer(
-      builder: (context, ref, child) {
-        if (movie == null) {
-          return SizedBox(
-            height: 0.6.sh,
-            width: 1.sw,
-          );
-        }
-        return SizedBox(
+    final state = ref.watch(movieDetailProvider(widget.movieId));
+    return switch (state) {
+      AsyncData(:final value) => SizedBox(
           height: 0.6.sh,
           width: 1.sw,
           child: Stack(
@@ -111,7 +100,7 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
                     .createShader(bounds),
                 blendMode: BlendMode.darken,
                 child: Image.network(
-                  movie.posterPath ?? "",
+                  value.posterPath ?? "",
                   width: 1.sw,
                   fit: BoxFit.cover,
                 ),
@@ -132,7 +121,7 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
                   right: 64.w,
                   child: Center(
                     child: Text(
-                      movie.title ?? "",
+                      value.title ?? "",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.white,
@@ -150,9 +139,13 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
               )
             ],
           ),
-        );
-      },
-    );
+        ),
+      AsyncError(:final error, :final stackTrace) => SizedBox(),
+      _ => SizedBox(
+          height: 0.6.sh,
+          width: 1.sw,
+        )
+    };
   }
 
   Widget _buildFunctions(BuildContext buildContext) {
@@ -191,8 +184,9 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
   }
 
   Widget _buildOverview() {
-    final movie = ref.watch(movieDetailViewModelProvider(widget.movieId)
-        .select((value) => value.movie));
+    final Movie? movie = ref.watch(movieDetailProvider(980489)).value;
+    // final movie = ref.watch(
+    //     movieDetailViewModel1Provider(widget.movieId).select((value) => value.valueOrNull?.movie));
     return Padding(
       padding:
           EdgeInsets.only(left: 12.w, top: 16.h, right: 12.w, bottom: 12.h),
@@ -231,16 +225,26 @@ class MovieDetailPageState extends ConsumerState<MovieDetailPage>
   }
 
   Widget _buildTabContent() {
-    final movie = ref.watch(movieDetailViewModelProvider(widget.movieId)
-        .select((value) => value.movie));
-    final casts = ref.watch(movieDetailViewModelProvider(widget.movieId)
-        .select((value) => value.casts));
-    final movies = ref.watch(movieDetailViewModelProvider(widget.movieId)
-        .select((value) => value.similarMovies));
+    // final movie = ref.watch(
+    //     movieDetailViewModel1Provider(widget.movieId).select((value) => value.valueOrNull?.movie));
+    // final casts = ref.watch(
+    //     movieDetailViewModel1Provider(widget.movieId).select((value) => value.valueOrNull?.casts));
+    // final movies = ref.watch(movieDetailViewModel1Provider(widget.movieId)
+    //     .select((value) => value.valueOrNull?.similarMovies));
+
     tabViews = [
-      TrailerTab(backdropPath: movie?.backdropPath ?? ""),
-      CastTab(casts: casts?.cast ?? List.empty()),
-      MoreTab(similarMovies: movies ?? List.empty())
+      Consumer(builder: (context, ref, value) {
+        final movie = ref.watch(movieDetailProvider(widget.movieId)).value;
+        return TrailerTab(backdropPath: movie?.backdropPath ?? "");
+      }),
+      Consumer(builder: (context, ref, value) {
+        final casts = ref.watch(movieCastsProvider(widget.movieId)).value;
+        return CastTab(casts: casts?.cast ?? List.empty());
+      }),
+      Consumer(builder: (context, ref, value) {
+        final movies = ref.watch(similarMoviesProvider(widget.movieId)).value;
+        return MoreTab(similarMovies: movies ?? List.empty());
+      })
     ];
     return tabViews[_tabIndex];
   }

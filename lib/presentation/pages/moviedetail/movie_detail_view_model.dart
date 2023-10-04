@@ -77,7 +77,7 @@ class MovieDetailViewModel extends StateNotifier<DetailState> {
   }
 }
 
-final movieDetailViewModelProvider = StateNotifierProvider.autoDispose
-    .family<MovieDetailViewModel, DetailState, int>((ref, movieId) {
-  return MovieDetailViewModel(ref);
-});
+// final movieDetailViewModelProvider = StateNotifierProvider.autoDispose
+//     .family<MovieDetailViewModel, DetailState, int>((ref, movieId) {
+//   return MovieDetailViewModel(ref);
+// });
